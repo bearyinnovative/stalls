@@ -1,2 +1,2 @@
-BearyChat Apps Vote
+BearyChat Apps Poll
 ===================
