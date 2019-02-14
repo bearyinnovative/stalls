@@ -38,3 +38,5 @@ nosetests.xml
 
 # Mac File
 .DS_Store
+
+.env

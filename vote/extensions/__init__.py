@@ -1,1 +1,1 @@
-from ._redis import redis, setup_redis    # noqa
+from ._redis import redis    # noqa
