@@ -4,10 +4,12 @@ from envcfg.raw import applet_poll as config
 from flask import Flask
 from werkzeug.utils import import_string
 
-from poll.extensions import redis
+from poll.extensions import db
 
 
-blueprints = []
+blueprints = [
+    'poll.modules.poll.api:bp',
+]
 
 
 def create_app(import_name=None):
@@ -16,7 +18,7 @@ def create_app(import_name=None):
     app.config.from_object('envcfg.raw.applet_poll')
     app.debug = bool(int(config.DEBUG))
 
-    redis.init_app(app)
+    db.init_app(app)
 
     for bp_import_name in blueprints:
         bp = import_string(bp_import_name)
