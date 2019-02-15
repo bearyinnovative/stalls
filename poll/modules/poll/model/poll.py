@@ -4,7 +4,6 @@ from __future__ import absolute_import
 
 from datetime import datetime
 import json
-from werkzeug.utils import cached_property
 
 from poll.extensions import db
 
@@ -23,29 +22,29 @@ class Poll(db.Model):
     _channels = db.Column('channels', db.String(10240))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    @cached_property
+    @property
     def options(self):
         return json.loads(self._options)
 
     @options.setter
-    def set_options(self, value):
-        self._options = json.dumps(self.value)
+    def options(self, value):
+        self._options = json.dumps(value)
 
-    @cached_property
+    @property
     def members(self):
         return json.loads(self._members)
 
-    @options.setter
-    def set_members(self, value):
-        self._members = json.dumps(self.value)
+    @members.setter
+    def members(self, value):
+        self._members = json.dumps(value)
 
-    @cached_property
+    @property
     def channels(self):
         return json.loads(self._channels)
 
-    @options.setter
-    def set_channels(self, value):
-        self._channels = json.dumps(self.value)
+    @channels.setter
+    def channels(self, value):
+        self._channels = json.dumps(value)
 
     def save(self, _commit=True):
         try:

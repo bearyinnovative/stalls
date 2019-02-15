@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+from datetime import datetime
 import logging
 
 from component import Form, Text, Input
@@ -72,7 +73,7 @@ def create_poll(payload):
     data = payload['data']
     option_count = 0
     try:
-        option_count = int(data.get('option_count')),
+        option_count = int(data.get('option_count'))
     except ValueError:
         return message.make_error("参数错误")
 
@@ -80,11 +81,15 @@ def create_poll(payload):
     for idx in range(option_count):
         options.append(data['option_{}'.format(idx+1)])
 
+    end_datetime = data.get('end_datetime', None)
+    if end_datetime:
+        end_datetime = datetime.strptime(end_datetime, "%Y-%m-%d %H:%M:%S")
+
     poll = Poll(
         description=data.get('description'),
         option_count=option_count,
-        is_anonymous=data.get('description'),
-        end_datetime=data.get('end_datetime'),
+        is_anonymous=data.get('is_anonymous'),
+        end_datetime=end_datetime,
     )
     poll.options = options
     poll.members = data.get('members', [])
