@@ -10,20 +10,23 @@ start = {
     ],
     "actions": [
         {
-            "name": "vote/create",
+            "name": "create",
             "text": "新建投票",
             "kind": "normal"
         }
     ],
 }
 
-error = {
-    'version': '1.0',
-    'fields': [
-        {
-            'type': 'text',
-            'text': '操作错误',
-        }
-    ]
 
-}
+def make_error(msg):
+    return {
+        'version': '1.0',
+        'fields': [
+            {
+                'type': 'text',
+                'props': {
+                    'value': msg,
+                }
+            }
+        ]
+    }

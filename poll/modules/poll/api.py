@@ -1,12 +1,16 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import absolute_import
+from copy import deepcopy
+import logging
 
-from flask import request
+from envcfg.raw import applet_poll as config
+from flask import request, url_for
+import requests
 
 from poll.blueprint import create_api_blueprint
-from poll.modules.poll.message import start, error
-from poll.modules.poll.service import process_data
+from poll.modules.poll.message import start, make_error
+from poll.modules.poll.service import process
 from poll.utils.api import json_response
 
 
@@ -20,11 +24,13 @@ def get_poll():
 
 @bp.route('/bearychat/poll', methods=['POST'])
 def handle_poll():
-    print request.headers
-    data = request.json
-    response = process_data(data)
+    args = request.args
+    payload = deepcopy(request.json)
+    payload.update(args.to_dict())
+    response = process(payload)
     if response is None:
-        return json_response(error)
+        logging.getLogger('poll').info('none respond')
+        return json_response(make_error(u'操作失败'))
     return json_response(response)
 
 
@@ -34,8 +40,13 @@ def handle_message():
     data = {
         "token": hubot_token,
         "vchannel_id": request.json['vchannel'],
-        "text": "欢迎使用会议小助手！我可以帮助你在 BearyChat 中处理会议、投票！您可以直接新建投票、会议，或使用模板来适用更多场景！",
-        "form_url": url_for("vote_handler", _external=True),
+        "text": ("欢迎使用会议小助手！我可以帮助你在 BearyChat "
+                 "中处理会议、投票！"
+                 "您可以直接新建投票、会议，或使用模板来适用更多场景！"),
+        "form_url": url_for("poll.get_poll", _external=True),
     }
-    resp = requests.post("{}/{}".format(api_base, "message.create"), json=data)
-    return 'ok'
+    url = "{}/{}".format(config.API_BASE, "message.create")
+    resp = requests.post(url, json=data)
+    if resp.status_code == 200:
+        return 'ok'
+    return 'failed'
