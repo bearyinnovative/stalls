@@ -1,1 +1,1 @@
-from ._redis import redis    # noqa
+from ._db import db    # noqa
