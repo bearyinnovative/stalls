@@ -12,11 +12,16 @@ class Poll(db.Model):
 
     __tablename__ = 'poll'
 
+    STATE_CREATED = 'created'
+    STATE_SENT = 'sent'
+
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(64))
     option_count = db.Column(db.Integer)
     is_anonymous = db.Column(db.Boolean)
     end_datetime = db.Column(db.DateTime)
+    message_key = db.Column(db.String(64))
+    state = db.Column(db.String(32), default=STATE_CREATED)
     _options = db.Column('options', db.String(10240))
     _members = db.Column('members', db.String(10240))
     _channels = db.Column('channels', db.String(10240))

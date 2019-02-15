@@ -3,18 +3,21 @@
 from datetime import datetime
 import logging
 
+from bearychat import openapi
 from component import Form, Text, Input
 from component import Select, Option, DateSelect, ChannelSelect, MemberSelect
 from component.action import PrimaryAction, DangerAction
+from envcfg.raw import applet_poll as config
+from flask import url_for
 
 from poll.modules.poll import message
 from poll.modules.poll import form
 from poll.modules.poll.model.poll import Poll
 
 
-def process(payload):
+def process_create(payload):
     action = payload['action']
-    func = handlers.get(action)
+    func = create_handlers.get(action)
     if callable(func):
         return func(payload)
     else:
@@ -56,8 +59,8 @@ def select_count_option(payload):
                            options=[Option(text='公开', value=False),
                                     Option(text='匿名', value=True)]),
                     DateSelect(name='end_datetime', label=u'投票截止时间'),
-                    MemberSelect(name='members', label=u'参与投票的成员'),
-                    ChannelSelect(name='channels', label=u'接收讨论组'))
+                    MemberSelect(name='member', label=u'参与投票的成员'),
+                    ChannelSelect(name='channel', label=u'接收讨论组'))
 
     form.add_actions(PrimaryAction(name='create-poll', text=u'创建投票'),
                      DangerAction(name='cancel-create-poll', text=u'取消投票'))
@@ -70,6 +73,7 @@ def cancel_select_option_count(payload):
 
 
 def create_poll(payload):
+    message_key = payload['message_key']
     data = payload['data']
     option_count = 0
     try:
@@ -90,18 +94,57 @@ def create_poll(payload):
         option_count=option_count,
         is_anonymous=data.get('is_anonymous'),
         end_datetime=end_datetime,
+        message_key=message_key,
     )
+
     poll.options = options
-    poll.members = data.get('members', [])
-    poll.channels = data.get('channels', [])
+    poll.members = filter(None, [data.get('member')])
+    poll.channels = filter(None, [data.get('channel')])
     poll.save()
+
+    notify_members(payload, poll)
+    notify_channels(payload, poll)
+
+    poll.state = Poll.STATE_SENT
+    poll.save()
+
     return message.make_error("OK")
 
 
-handlers = {
+create_handlers = {
     'create': setup_option_count,
     'cancel-create': cancel,
     'select-option-count': select_count_option,
     'cancel-select-option-count': cancel_select_option_count,
     'create-poll': create_poll,
 }
+
+
+def notify_channels(payload, poll):
+    token = payload.get('token')
+    client = openapi.Client(token, base_url=config.OPENAPI_BASE)
+    for each in poll.channels:
+        c = client.channel.info({'channel_id': each})
+        vchannel_id = c['vchannel_id']
+        client.message.create({
+            'vchannel_id': vchannel_id,
+            'text': 'vote',
+            'form_url': url_for('poll.get_poll', _external=True)
+        })
+
+
+def notify_members(payload, poll):
+    pass
+
+
+def process_vote(payload):
+    action = payload['action']
+    func = vote_handlers.get(action)
+    if callable(func):
+        return func(payload)
+    else:
+        logging.getLogger('poll').info("action {} not found".format(action))
+        return None
+
+
+vote_handlers = {}
