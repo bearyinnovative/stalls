@@ -16,7 +16,7 @@ def create_show_poll_form(poll):
     form = Form()
     form.add_fields(
         Text(label=u'投票说明', value=poll.description),
-        Select(name="selection", options=options),
+        Select(name="poll_option", options=options),
     )
 
     form.add_actions(

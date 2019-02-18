@@ -13,7 +13,7 @@ from flask import url_for
 from poll.extensions import db
 from poll.modules.poll import message
 from poll.modules.poll import form
-from poll.modules.poll.model.poll import Poll, PollOption
+from poll.modules.poll.model.poll import Poll, PollOption, UserSelection
 
 
 def process_create(payload):
@@ -31,7 +31,7 @@ def setup_option_count(payload):
 
 
 def cancel(payload):
-    return message.make_error("取消")
+    return message.make_error(u"取消")
 
 
 def select_count_option(payload):
@@ -74,6 +74,9 @@ def cancel_select_option_count(payload):
 
 
 def create_poll(payload):
+    token = payload['token']
+    team_id = payload['team_id']
+    user_id = payload['user_id']
     message_key = payload['message_key']
     data = payload['data']
     option_count = 0
@@ -94,6 +97,9 @@ def create_poll(payload):
         return message.make_error("结束时间不合法")
 
     poll = Poll(
+        token=token,
+        team_id=team_id,
+        user_id=user_id,
         description=data.get('description'),
         option_count=option_count,
         is_anonymous=data.get('is_anonymous'),
@@ -156,4 +162,40 @@ def process_vote(payload):
         return None
 
 
-vote_handlers = {}
+def confirm_poll(payload):
+    poll_id = payload['poll_id']
+    team_id = payload['team_id']
+    user_id = payload['user_id']
+    data = payload['data']
+    poll_option_id = data.get('poll_option')
+
+    if poll_option_id is None:
+        return message.make_error(u'请选择投票选项')
+
+    poll_option = PollOption.query.get(poll_option_id)
+
+    if poll_option is None:
+        return message.make_error(u'投票选项有误')
+
+    poll = Poll.query.get(poll_id)
+    if (poll is None or poll.team_id != team_id):
+        return message.make_error(u'投票不存在')
+
+    us = UserSelection.get_by_poll_id_and_user_id(poll_id, user_id)
+    if us is not None:
+        return message.make_error(u'您已投票')
+
+    us = UserSelection(
+        poll_id=poll.id,
+        team_id=team_id,
+        user_id=user_id,
+        option_id=poll_option.id
+    )
+    us.save()
+
+    return message.make_error(u'投票成功')
+
+
+vote_handlers = {
+    'confirm-poll': confirm_poll,
+}

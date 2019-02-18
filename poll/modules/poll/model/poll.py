@@ -16,6 +16,9 @@ class Poll(db.Model):
     STATE_SENT = 'sent'
 
     id = db.Column(db.Integer, primary_key=True)
+    token = db.Column(db.String(64))
+    user_id = db.Column(db.String(32),)
+    team_id = db.Column(db.String(32),)
     description = db.Column(db.String(64))
     option_count = db.Column(db.Integer)
     is_anonymous = db.Column(db.Boolean)
@@ -88,9 +91,9 @@ class UserSelection(db.Model):
     __tablename__ = 'user_selection'
 
     id = db.Column(db.Integer, primary_key=True)
-    team_id = db.Column(db.Integer,)
-    user_id = db.Column(db.Integer,)
     poll_id = db.Column(db.Integer,)
+    team_id = db.Column(db.String(32),)
+    user_id = db.Column(db.String(32),)
     option_id = db.Column(db.Integer,)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -102,3 +105,10 @@ class UserSelection(db.Model):
         except Exception as e:
             db.session.rollback()
             raise e
+
+    @classmethod
+    def get_by_poll_id_and_user_id(cls, poll_id, user_id):
+        return cls.query.filter_by(
+            poll_id=poll_id,
+            user_id=user_id
+        ).first()

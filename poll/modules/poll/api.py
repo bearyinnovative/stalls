@@ -70,3 +70,24 @@ def get_poll():
     response = create_show_poll_form(poll)
 
     return json_response(response)
+
+
+@bp.route('/bearychat/poll.vote', methods=['POST'])
+def do_poll():
+    args = request.args
+    id_ = args['poll_id']
+    poll = Poll.query.get(id_)
+    if poll is None:
+        return json_response(make_error(u'投票已失效'))
+
+    if datetime.utcnow() > poll.end_datetime:
+        return json_response(make_error(u'投票已过期'))
+
+    payload = deepcopy(request.json)
+    payload.update(args.to_dict())
+
+    response = process_vote(payload)
+    if response is None:
+        logging.getLogger('poll').info('none respond')
+        return json_response(make_error(u'操作失败'))
+    return json_response(response)
