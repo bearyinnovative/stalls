@@ -59,3 +59,46 @@ class Poll(db.Model):
         except Exception as e:
             db.session.rollback()
             raise e
+
+
+class PollOption(db.Model):
+
+    __tablename__ = 'poll_option'
+
+    id = db.Column(db.Integer, primary_key=True)
+    label = db.Column(db.String(64))
+    poll_id = db.Column(db.Integer)
+
+    def save(self, _commit=True):
+        try:
+            db.session.add(self)
+            if _commit:
+                db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise e
+
+    @classmethod
+    def get_multi_by_poll_id(cls, poll_id):
+        return cls.query.filter_by(poll_id=poll_id).all()
+
+
+class UserSelection(db.Model):
+
+    __tablename__ = 'user_selection'
+
+    id = db.Column(db.Integer, primary_key=True)
+    team_id = db.Column(db.Integer,)
+    user_id = db.Column(db.Integer,)
+    poll_id = db.Column(db.Integer,)
+    option_id = db.Column(db.Integer,)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def save(self, _commit=True):
+        try:
+            db.session.add(self)
+            if _commit:
+                db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            raise e

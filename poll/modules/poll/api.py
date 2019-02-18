@@ -2,14 +2,16 @@
 
 from __future__ import absolute_import
 from copy import deepcopy
+from datetime import datetime
 import logging
 
-from component import Form, Text
+from component import Form, Text, Select, Option
 from envcfg.raw import applet_poll as config
 from flask import request, url_for
 import requests
 
 from poll.blueprint import create_api_blueprint
+from poll.modules.poll.form import create_show_poll_form
 from poll.modules.poll.message import start, make_error
 from poll.modules.poll.model.poll import Poll
 from poll.modules.poll.service import process_create, process_vote
@@ -57,13 +59,14 @@ def handle_poll():
 @bp.route('/bearychat/poll.vote')
 def get_poll():
     args = request.args
-    message_key = args['message_key']
-    poll = Poll.query.filter(message_key=message_key).first()
+    id_ = args['poll_id']
+    poll = Poll.query.get(id_)
     if poll is None:
         return json_response(make_error(u'投票已失效'))
 
-    form = Form()
-    form.add_fields(
-        Text(label=u'投票说明', value=poll.description),
-        Select()
-    )
+    if datetime.utcnow() > poll.end_datetime:
+        return json_response(make_error(u'投票已过期'))
+
+    response = create_show_poll_form(poll)
+
+    return json_response(response)

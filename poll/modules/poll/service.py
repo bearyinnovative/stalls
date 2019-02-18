@@ -10,9 +10,10 @@ from component.action import PrimaryAction, DangerAction
 from envcfg.raw import applet_poll as config
 from flask import url_for
 
+from poll.extensions import db
 from poll.modules.poll import message
 from poll.modules.poll import form
-from poll.modules.poll.model.poll import Poll
+from poll.modules.poll.model.poll import Poll, PollOption
 
 
 def process_create(payload):
@@ -89,6 +90,9 @@ def create_poll(payload):
     if end_datetime:
         end_datetime = datetime.strptime(end_datetime, "%Y-%m-%d %H:%M:%S")
 
+    if end_datetime <= datetime.utcnow():
+        return message.make_error("结束时间不合法")
+
     poll = Poll(
         description=data.get('description'),
         option_count=option_count,
@@ -107,6 +111,11 @@ def create_poll(payload):
 
     poll.state = Poll.STATE_SENT
     poll.save()
+
+    for each in options:
+        option = PollOption(label=each, poll_id=poll.id)
+        option.save(_commit=False)
+    db.session.commit()
 
     return message.make_error("OK")
 
@@ -129,7 +138,7 @@ def notify_channels(payload, poll):
         client.message.create({
             'vchannel_id': vchannel_id,
             'text': 'vote',
-            'form_url': url_for('poll.get_poll', _external=True)
+            'form_url': url_for('poll.get_poll', poll_id=poll.id, _external=True)
         })
 
 
