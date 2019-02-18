@@ -1,6 +1,6 @@
-Flask
-Flask-SQLAlchemy
+bearychat
+flask
+flask-sqlalchemy
+flask-script
 python-envcfg
-MySQL-python
 requests
-requests-futures
