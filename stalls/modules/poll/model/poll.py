@@ -7,7 +7,7 @@ from datetime import datetime
 import json
 import os
 
-from poll.extensions import db
+from stalls.extensions import db
 
 
 def gen_visit_key():

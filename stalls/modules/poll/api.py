@@ -7,18 +7,18 @@ import logging
 
 from flask import abort, request, url_for
 
-from poll.blueprint import create_api_blueprint
-from poll.modules.poll.form import create_show_poll_form
-from poll.modules.poll.form import (create_ready_show_poll_result_form,
-                                    create_show_created_poll_result_form,
-                                    create_show_joined_poll_result_form)
-from poll.modules.poll.message import start, make_error
-from poll.modules.poll.model.poll import Poll, UserSelection
-from poll.modules.poll.service import process_create, process_vote
-from poll.modules.poll.utils import (create_result_chart,
-                                     get_p2p_vchannel_id,
-                                     send_message_to_bearychat)
-from poll.utils.api import json_response
+from stalls.blueprint import create_api_blueprint
+from stalls.modules.poll.form import create_show_poll_form
+from stalls.modules.poll.form import (create_ready_show_poll_result_form,
+                                      create_show_created_poll_result_form,
+                                      create_show_joined_poll_result_form)
+from stalls.modules.poll.message import start, make_error
+from stalls.modules.poll.model.poll import Poll, UserSelection
+from stalls.modules.poll.service import process_create, process_vote
+from stalls.modules.poll.utils import (create_result_chart,
+                                       get_p2p_vchannel_id,
+                                       send_message_to_bearychat)
+from stalls.utils.api import json_response
 
 
 bp = create_api_blueprint('poll', __name__)

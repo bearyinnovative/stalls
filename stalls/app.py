@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 
-from envcfg.raw import applet_poll as config
+from envcfg.raw import stalls as config
 from flask import Flask
 from werkzeug.utils import import_string
 
-from poll.extensions import db
+from stalls.extensions import db
 
 
 blueprints = [
-    'poll.modules.poll.api:bp',
+    'stalls.modules.poll.api:bp',
 ]
 
 
 def create_app(import_name=None):
     app = Flask(import_name or __name__)
 
-    app.config.from_object('envcfg.raw.applet_poll')
+    app.config.from_object('envcfg.raw.stalls')
     app.debug = bool(int(config.DEBUG))
 
     db.init_app(app)

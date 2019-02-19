@@ -2,10 +2,10 @@
 
 from base64 import b64encode
 from bearychat import openapi
-from envcfg.raw import applet_poll as config
+from envcfg.raw import stalls as config
 import pygal
 
-from poll.modules.poll.model.poll import PollOption, UserSelection
+from stalls.modules.poll.model.poll import PollOption, UserSelection
 
 
 def get_p2p_vchannel_id(token, user_id):

@@ -7,13 +7,13 @@ from bearychat import openapi
 from component import Form, Text, Input
 from component import Select, Option, DateSelect, ChannelSelect, MemberSelect
 from component.action import PrimaryAction, DangerAction
-from envcfg.raw import applet_poll as config
+from envcfg.raw import stalls as config
 from flask import url_for
 
-from poll.extensions import db
-from poll.modules.poll import message
-from poll.modules.poll import form
-from poll.modules.poll.model.poll import Poll, PollOption, UserSelection
+from stalls.extensions import db
+from stalls.modules.poll import message
+from stalls.modules.poll import form
+from stalls.modules.poll.model.poll import Poll, PollOption, UserSelection
 
 
 def process_create(payload):
@@ -22,7 +22,7 @@ def process_create(payload):
     if callable(func):
         return func(payload)
     else:
-        logging.getLogger('poll').info("action {} not found".format(action))
+        logging.getLogger('stalls').info("action {} not found".format(action))
         return None
 
 

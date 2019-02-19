@@ -4,7 +4,7 @@ from component import Form, Text
 from component import Select, Option
 from component.action import PrimaryAction
 
-from poll.modules.poll.model.poll import PollOption
+from stalls.modules.poll.model.poll import PollOption
 
 
 def create_show_poll_form(poll):

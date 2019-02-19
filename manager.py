@@ -5,8 +5,8 @@ import os
 from flask_script import Manager, Server
 from setuptools import find_packages
 
-from poll.app import create_app
-from poll.extensions import db
+from stalls.app import create_app
+from stalls.extensions import db
 
 
 app_root = os.path.dirname(os.path.realpath(__name__))
@@ -18,9 +18,9 @@ manager.add_command("runserver", server)
 
 
 def _import_models():
-    packages = find_packages('./poll/modules')
+    packages = find_packages('./stalls/modules')
     for each in packages:
-        guess_module_name = 'poll.modules.%s.models' % each
+        guess_module_name = 'stalls.modules.%s.models' % each
         try:
             __import__(guess_module_name, globals(), locals())
             print 'Find model:', guess_module_name

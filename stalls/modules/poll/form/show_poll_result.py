@@ -3,7 +3,7 @@
 from component import Form, Select, Option, Text
 from component.action import Action
 
-from poll.modules.poll.model.poll import Poll, UserSelection
+from stalls.modules.poll.model.poll import Poll, UserSelection
 
 
 def create_ready_show_poll_result_form(user_id):
