@@ -2,7 +2,7 @@
 
 from component import Form, Text
 from component import Select, Option
-from component.action import PrimaryAction, DangerAction
+from component.action import PrimaryAction
 
 from poll.modules.poll.model.poll import PollOption
 

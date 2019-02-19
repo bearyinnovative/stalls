@@ -2,10 +2,16 @@
 
 from __future__ import absolute_import
 
+import binascii
 from datetime import datetime
 import json
+import os
 
 from poll.extensions import db
+
+
+def gen_visit_key():
+    return binascii.hexlify(os.urandom(32)).decode()
 
 
 class Poll(db.Model):
@@ -16,7 +22,7 @@ class Poll(db.Model):
     STATE_SENT = 'sent'
 
     id = db.Column(db.Integer, primary_key=True)
-    token = db.Column(db.String(64))
+    hubot_token = db.Column(db.String(64))
     user_id = db.Column(db.String(32),)
     team_id = db.Column(db.String(32),)
     description = db.Column(db.String(64))
@@ -25,6 +31,7 @@ class Poll(db.Model):
     end_datetime = db.Column(db.DateTime)
     message_key = db.Column(db.String(64))
     state = db.Column(db.String(32), default=STATE_CREATED)
+    visit_key = db.Column(db.String(64), default=gen_visit_key)
     _options = db.Column('options', db.String(10240))
     _members = db.Column('members', db.String(10240))
     _channels = db.Column('channels', db.String(10240))
@@ -63,6 +70,22 @@ class Poll(db.Model):
             db.session.rollback()
             raise e
 
+    @classmethod
+    def get_multi_by_ids(cls, ids):
+        return cls.query.filter(Poll.id.in_(ids)).all()
+
+    @classmethod
+    def get_multi_by_user_id(cls, user_id):
+        return cls.query.filter_by(user_id=user_id).all()
+
+    @classmethod
+    def count_by_user_id(cls, user_id):
+        return cls.query.filter_by(user_id=user_id).count()
+
+    @classmethod
+    def get_by_id_and_visit_key(cls, poll_id, vk):
+        return cls.query.filter_by(id=poll_id, visit_key=vk).first()
+
 
 class PollOption(db.Model):
 
@@ -82,8 +105,11 @@ class PollOption(db.Model):
             raise e
 
     @classmethod
-    def get_multi_by_poll_id(cls, poll_id):
-        return cls.query.filter_by(poll_id=poll_id).all()
+    def get_multi_by_poll_id(cls, poll_id, _execute=True):
+        q = cls.query.filter_by(poll_id=poll_id)
+        if _execute:
+            return q.all()
+        return q
 
 
 class UserSelection(db.Model):
@@ -105,6 +131,19 @@ class UserSelection(db.Model):
         except Exception as e:
             db.session.rollback()
             raise e
+
+    @classmethod
+    def get_multi_by_user_id(cls, user_id):
+        return cls.query.filter_by(user_id=user_id).all()
+
+    @classmethod
+    def count_by_user_id(cls, user_id):
+        return cls.query.filter_by(user_id=user_id).count()
+
+    @classmethod
+    def count_by_poll_id_and_option_id(cls, poll_id, option_id):
+        return cls.query.filter_by(poll_id=poll_id,
+                                   option_id=option_id).count()
 
     @classmethod
     def get_by_poll_id_and_user_id(cls, poll_id, user_id):

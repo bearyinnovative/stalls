@@ -2,5 +2,6 @@ bearychat
 flask
 flask-sqlalchemy
 flask-script
+pygal
 python-envcfg
 requests

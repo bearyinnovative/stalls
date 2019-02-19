@@ -74,7 +74,7 @@ def cancel_select_option_count(payload):
 
 
 def create_poll(payload):
-    token = payload['token']
+    hubot_token = payload['token']
     team_id = payload['team_id']
     user_id = payload['user_id']
     message_key = payload['message_key']
@@ -97,7 +97,7 @@ def create_poll(payload):
         return message.make_error("结束时间不合法")
 
     poll = Poll(
-        token=token,
+        hubot_token=hubot_token,
         team_id=team_id,
         user_id=user_id,
         description=data.get('description'),
@@ -144,12 +144,25 @@ def notify_channels(payload, poll):
         client.message.create({
             'vchannel_id': vchannel_id,
             'text': 'vote',
-            'form_url': url_for('poll.get_poll', poll_id=poll.id, _external=True)
+            'form_url': url_for('poll.get_poll',
+                                poll_id=poll.id,
+                                _external=True)
         })
 
 
 def notify_members(payload, poll):
-    pass
+    token = payload.get('token')
+    client = openapi.Client(token, base_url=config.OPENAPI_BASE)
+    for each in poll.members:
+        c = client.p2p.create({'user_id': each})
+        vchannel_id = c['vchannel_id'],
+        client.message.create({
+            'vchannel_id': vchannel_id,
+            'text': 'vote',
+            'form_url': url_for('poll.get_poll',
+                                poll_id=poll.id,
+                                _external=True)
+        })
 
 
 def process_vote(payload):
