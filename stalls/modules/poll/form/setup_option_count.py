@@ -7,7 +7,7 @@ from component import Select, Option
 from component.action import PrimaryAction, DangerAction
 
 
-def create_form():
+def create_setup_option_form():
     form = Form()
     form.add_fields(Text(value=_('Your are creating a poll, '
                                  'how many options do you want?')),
@@ -36,9 +36,3 @@ def create_form():
         DangerAction(name='poll/cancel-select-option-count', text=_('Cancel')),
     )
     return form.render()
-
-
-data = create_form()
-
-
-del create_form

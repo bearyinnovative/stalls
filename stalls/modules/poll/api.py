@@ -33,7 +33,7 @@ def handle_message():
         data = {
             'text': lazy_gettext('Poll Result'),
             "vchannel_id": request.json['vchannel'],
-            "form_url": url_for("poll.show_poll_result", _external=True),
+            "form_url": url_for("poll.get_poll_result", _external=True),
         }
     else:
         data = {

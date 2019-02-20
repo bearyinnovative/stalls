@@ -28,7 +28,7 @@ def process_create(payload):
 
 
 def setup_option_count(payload):
-    return form.setup_option_count
+    return form.create_setup_option_form()
 
 
 def cancel(payload):
