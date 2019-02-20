@@ -1,0 +1,162 @@
+# Translations template for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-02-20 22:08+0800\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: modules/poll/api.py:33
+msgid "Poll Result"
+msgstr ""
+
+#: modules/poll/api.py:76 modules/poll/api.py:118 modules/poll/api.py:174
+#: modules/poll/api.py:176 modules/poll/api.py:180
+msgid "Operation Failed"
+msgstr ""
+
+#: modules/poll/api.py:87 modules/poll/api.py:107 modules/poll/service.py:193
+msgid "Invalid Poll"
+msgstr ""
+
+#: modules/poll/api.py:90 modules/poll/api.py:110
+msgid "Poll Expired"
+msgstr ""
+
+#: modules/poll/api.py:94 modules/poll/service.py:197
+msgid "You have voted"
+msgstr ""
+
+#: modules/poll/api.py:158
+#, python-format
+msgid "[\"%(desc)s\" Result](%(url)s)"
+msgstr ""
+
+#: modules/poll/api.py:178
+msgid "Success"
+msgstr ""
+
+#: modules/poll/message.py:10
+msgid "Create Poll"
+msgstr ""
+
+#: modules/poll/form/setup_option_count.py:36 modules/poll/service.py:35
+#: modules/poll/service.py:66 modules/poll/service.py:72
+msgid "Cancel"
+msgstr ""
+
+#: modules/poll/service.py:44 modules/poll/service.py:85
+msgid "Parameters Error"
+msgstr ""
+
+#: modules/poll/service.py:47
+#, python-format
+msgid "Your are creating a poll with %(count)d options"
+msgstr ""
+
+#: modules/poll/form/show_poll.py:20 modules/poll/service.py:50
+msgid "Description"
+msgstr ""
+
+#: modules/poll/service.py:55
+#, python-format
+msgid "Option %(idx)d"
+msgstr ""
+
+#: modules/poll/service.py:59
+msgid "Public or Anonymous"
+msgstr ""
+
+#: modules/poll/service.py:60
+msgid "Public"
+msgstr ""
+
+#: modules/poll/service.py:61
+msgid "Anonymous"
+msgstr ""
+
+#: modules/poll/service.py:62
+msgid "Expiration"
+msgstr ""
+
+#: modules/poll/service.py:63
+msgid "Target Channel"
+msgstr ""
+
+#: modules/poll/form/setup_option_count.py:35 modules/poll/form/show_poll.py:25
+#: modules/poll/service.py:65
+msgid "Confirm"
+msgstr ""
+
+#: modules/poll/service.py:95
+msgid "Invalid Expiration"
+msgstr ""
+
+#: modules/poll/service.py:184
+msgid "Please Choose Your Option"
+msgstr ""
+
+#: modules/poll/service.py:189
+msgid "Invalid Option"
+msgstr ""
+
+#: modules/poll/service.py:207
+msgid "Opeartion Success"
+msgstr ""
+
+#: modules/poll/form/setup_option_count.py:12
+msgid "Your are creating a poll, how many options do you want?"
+msgstr ""
+
+#: modules/poll/form/setup_option_count.py:15
+msgid "Option Count"
+msgstr ""
+
+#: modules/poll/form/setup_option_count.py:17
+#: modules/poll/form/setup_option_count.py:19
+#: modules/poll/form/setup_option_count.py:21
+#: modules/poll/form/setup_option_count.py:23
+#: modules/poll/form/setup_option_count.py:25
+#: modules/poll/form/setup_option_count.py:27
+#: modules/poll/form/setup_option_count.py:29
+#: modules/poll/form/setup_option_count.py:31
+#, python-format
+msgid "with %(num)d options"
+msgstr ""
+
+#: modules/poll/form/show_poll_result.py:18
+msgid "You have not joined any polls yet"
+msgstr ""
+
+#: modules/poll/form/show_poll_result.py:22
+msgid "Polls I Created"
+msgstr ""
+
+#: modules/poll/form/show_poll_result.py:26
+msgid "Polls I Joined"
+msgstr ""
+
+#: modules/poll/form/show_poll_result.py:35
+msgid "Polls Created"
+msgstr ""
+
+#: modules/poll/form/show_poll_result.py:39
+#: modules/poll/form/show_poll_result.py:52
+msgid "View Result"
+msgstr ""
+
+#: modules/poll/form/show_poll_result.py:48
+msgid "Polls Joined"
+msgstr ""
+
