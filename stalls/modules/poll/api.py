@@ -6,7 +6,7 @@ from datetime import datetime
 import logging
 
 from flask import abort, request, url_for
-from flask_babel import lazy_gettext as _
+from flask_babel import gettext as _
 
 from stalls.blueprint import create_api_blueprint
 from stalls.modules.poll.form import create_show_poll_form

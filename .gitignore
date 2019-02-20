@@ -27,10 +27,6 @@ pip-log.txt
 .tox
 nosetests.xml
 
-# Translations
-*.pot
-*.mo
-
 # Mr Developer
 .mr.developer.cfg
 .project

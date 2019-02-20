@@ -9,7 +9,7 @@ babel = Babel()
 def setup_babel(app):
     babel.init_app(app)
     default = app.config.get('BABEL_DEFAULT_LOCALE', 'zh')
-    supported = app.config.get('BABEL_SUPPORTED_LOCALES', ['en', 'zh'])
+    supported = app.config.get('BABEL_SUPPORTED_LOCALES', ['zh', 'en'])
 
     @babel.localeselector
     def get_locale():
