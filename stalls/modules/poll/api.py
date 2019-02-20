@@ -7,7 +7,6 @@ import logging
 
 from flask import abort, request, url_for
 from flask_babel import gettext as _
-from flask_babel import lazy_gettext
 
 from stalls.blueprint import create_api_blueprint
 from stalls.modules.poll.form import create_show_poll_form
@@ -31,7 +30,7 @@ def handle_message():
     token = request.json['token']
     if request.json['text'] in (u'投票结果', 'result'):
         data = {
-            'text': lazy_gettext('Poll Result'),
+            'text': _('Poll Result'),
             "vchannel_id": request.json['vchannel'],
             "form_url": url_for("poll.get_poll_result", _external=True),
         }
