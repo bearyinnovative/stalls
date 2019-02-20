@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from flask_babel import gettext as _
+
 from component import Form, Text
 from component import Select, Option
 from component.action import PrimaryAction
@@ -15,11 +17,11 @@ def create_show_poll_form(poll):
 
     form = Form()
     form.add_fields(
-        Text(label=u'投票说明', value=poll.description),
+        Text(label=_('Description'), value=poll.description),
         Select(name="poll_option", options=options),
     )
 
     form.add_actions(
-        PrimaryAction(name='confirm-poll', text=u'确定'),
+        PrimaryAction(name='confirm-poll', text=_('Confirm')),
     )
     return form.render()

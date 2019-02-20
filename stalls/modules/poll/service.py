@@ -5,10 +5,11 @@ import logging
 
 from bearychat import openapi
 from component import Form, Text, Input
-from component import Select, Option, DateSelect, ChannelSelect, MemberSelect
+from component import Select, Option, DateSelect, ChannelSelect
 from component.action import PrimaryAction, DangerAction
 from envcfg.raw import stalls as config
 from flask import url_for
+from flask_babel import lazy_gettext as _
 
 from stalls.extensions import db
 from stalls.modules.poll import message
@@ -31,7 +32,7 @@ def setup_option_count(payload):
 
 
 def cancel(payload):
-    return message.make_error(u"取消")
+    return message.make_error(_("Cancel"))
 
 
 def select_count_option(payload):
@@ -40,37 +41,35 @@ def select_count_option(payload):
     try:
         option_count = int(data.get('option_count'))
     except ValueError:
-        return message.make_error(u'参数错误')
-
-    if not option_count:
-        return message.make_error(u'`data` not supported')
+        return message.make_error(_('Parameters Error'))
 
     form = Form()
-    form.add_fields(Text(value=u'你将创建 %s 个选项的投票' % option_count),
-                    Input(label=u'投票说明', name='description'),
+    form.add_fields(Text(value=_('Your are creating a poll with '
+                                 '%(count)d options',
+                                 count=option_count)),
+                    Input(label=_('Description'), name='description'),
                     Input(name='option_count',
                           hidden=True, default_value=option_count))
 
     for each in range(option_count):
-        label = "选项 {}".format(each + 1)
+        label = _("Option %(idx)d", idx=(each+1))
         name = "option_{}".format(each + 1)
         form.add_field(Input(name=name, label=label))
 
-    form.add_fields(Select(name='is_anonymous', label='公开/匿名',
-                           options=[Option(text='公开', value=False),
-                                    Option(text='匿名', value=True)]),
-                    DateSelect(name='end_datetime', label=u'投票截止时间'),
-                    MemberSelect(name='member', label=u'参与投票的成员'),
-                    ChannelSelect(name='channel', label=u'接收讨论组'))
+    form.add_fields(Select(name='is_anonymous', label=_('Public or Anonymous'),
+                           options=[Option(text=_('Public'), value=False),
+                                    Option(text=_('Anonymous'), value=True)]),
+                    DateSelect(name='end_datetime', label=_('Expiration')),
+                    ChannelSelect(name='channel', label=_('Target Channel')))
 
-    form.add_actions(PrimaryAction(name='create-poll', text=u'创建投票'),
-                     DangerAction(name='cancel-create-poll', text=u'取消投票'))
+    form.add_actions(PrimaryAction(name='create-poll', text=_('Confirm')),
+                     DangerAction(name='cancel-create-poll', text=_('Cancel')))
 
     return form.render()
 
 
 def cancel_select_option_count(payload):
-    return message.make_error("取消")
+    return message.make_error(_(u"Cancel"))
 
 
 def create_poll(payload):
@@ -83,18 +82,17 @@ def create_poll(payload):
     try:
         option_count = int(data.get('option_count'))
     except ValueError:
-        return message.make_error("参数错误")
+        return message.make_error(_("Parameters Error"))
 
     options = []
     for idx in range(option_count):
         options.append(data['option_{}'.format(idx+1)])
 
-    end_datetime = data.get('end_datetime', None)
-    if end_datetime:
-        end_datetime = datetime.strptime(end_datetime, "%Y-%m-%d %H:%M:%S")
-
-    if end_datetime <= datetime.utcnow():
-        return message.make_error("结束时间不合法")
+    raw_end_datetime = data.get('end_datetime', None)
+    if raw_end_datetime:
+        end_datetime = datetime.fromtimestamp(int(raw_end_datetime))
+        if end_datetime <= datetime.utcnow():
+            return message.make_error(_("Invalid Expiration"))
 
     poll = Poll(
         hubot_token=hubot_token,
@@ -183,20 +181,20 @@ def confirm_poll(payload):
     poll_option_id = data.get('poll_option')
 
     if poll_option_id is None:
-        return message.make_error(u'请选择投票选项')
+        return message.make_error(_('Please Choose Your Option'))
 
     poll_option = PollOption.query.get(poll_option_id)
 
     if poll_option is None:
-        return message.make_error(u'投票选项有误')
+        return message.make_error(_('Invalid Option'))
 
     poll = Poll.query.get(poll_id)
     if (poll is None or poll.team_id != team_id):
-        return message.make_error(u'投票不存在')
+        return message.make_error(_('Invalid Poll'))
 
     us = UserSelection.get_by_poll_id_and_user_id(poll_id, user_id)
     if us is not None:
-        return message.make_error(u'您已投票')
+        return message.make_error(_(u'You have voted'))
 
     us = UserSelection(
         poll_id=poll.id,
@@ -206,7 +204,7 @@ def confirm_poll(payload):
     )
     us.save()
 
-    return message.make_error(u'投票成功')
+    return message.make_error(_('Opeartion Success'))
 
 
 vote_handlers = {

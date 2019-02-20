@@ -1,0 +1,298 @@
+# English translations for PROJECT.
+# Copyright (C) 2019 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2019-02-20 19:34+0800\n"
+"PO-Revision-Date: 2019-02-20 19:34+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: en\n"
+"Language-Team: en <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.6.0\n"
+
+#: stalls/modules/poll/api.py:33
+msgid "Poll Result"
+msgstr ""
+
+#: stalls/modules/poll/api.py:76 stalls/modules/poll/api.py:118
+#: stalls/modules/poll/api.py:174 stalls/modules/poll/api.py:176
+#: stalls/modules/poll/api.py:180
+msgid "Operation Failed"
+msgstr ""
+
+#: stalls/modules/poll/api.py:87 stalls/modules/poll/api.py:107
+#: stalls/modules/poll/service.py:193
+msgid "Invalid Poll"
+msgstr ""
+
+#: stalls/modules/poll/api.py:90 stalls/modules/poll/api.py:110
+msgid "Poll Expired"
+msgstr ""
+
+#: stalls/modules/poll/api.py:94 stalls/modules/poll/service.py:197
+msgid "You have voted"
+msgstr ""
+
+#: stalls/modules/poll/api.py:158
+#, python-format
+msgid "[\"%(desc)s\" Result](%(url)s)"
+msgstr ""
+
+#: stalls/modules/poll/api.py:178
+msgid "Success"
+msgstr ""
+
+#: stalls/modules/poll/message.py:10
+msgid "Create Poll"
+msgstr ""
+
+#: stalls/modules/poll/form/setup_option_count.py:36
+#: stalls/modules/poll/service.py:35 stalls/modules/poll/service.py:66
+#: stalls/modules/poll/service.py:72
+msgid "Cancel"
+msgstr ""
+
+#: stalls/modules/poll/service.py:44 stalls/modules/poll/service.py:85
+msgid "Parameters Error"
+msgstr ""
+
+#: stalls/modules/poll/service.py:47
+#, python-format
+msgid "Your are creating a poll with %(count)d options"
+msgstr ""
+
+#: stalls/modules/poll/form/show_poll.py:20 stalls/modules/poll/service.py:50
+msgid "Description"
+msgstr ""
+
+#: stalls/modules/poll/service.py:55
+#, python-format
+msgid "Option %(idx)d"
+msgstr ""
+
+#: stalls/modules/poll/service.py:59
+msgid "Public or Anonymous"
+msgstr ""
+
+#: stalls/modules/poll/service.py:60
+msgid "Public"
+msgstr ""
+
+#: stalls/modules/poll/service.py:61
+msgid "Anonymous"
+msgstr ""
+
+#: stalls/modules/poll/service.py:62
+msgid "Expiration"
+msgstr ""
+
+#: stalls/modules/poll/service.py:63
+msgid "Target Channel"
+msgstr ""
+
+#: stalls/modules/poll/form/setup_option_count.py:35
+#: stalls/modules/poll/form/show_poll.py:25 stalls/modules/poll/service.py:65
+msgid "Confirm"
+msgstr ""
+
+#: stalls/modules/poll/service.py:95
+msgid "Invalid Expiration"
+msgstr ""
+
+#: stalls/modules/poll/service.py:184
+msgid "Please Choose Your Option"
+msgstr ""
+
+#: stalls/modules/poll/service.py:189
+msgid "Invalid Option"
+msgstr ""
+
+#: stalls/modules/poll/service.py:207
+msgid "Opeartion Success"
+msgstr ""
+
+#: stalls/modules/poll/form/setup_option_count.py:12
+msgid "Your are creating a poll, how many options do you want?"
+msgstr ""
+
+#: stalls/modules/poll/form/setup_option_count.py:15
+msgid "Option Count"
+msgstr ""
+
+#: stalls/modules/poll/form/setup_option_count.py:17
+#: stalls/modules/poll/form/setup_option_count.py:19
+#: stalls/modules/poll/form/setup_option_count.py:21
+#: stalls/modules/poll/form/setup_option_count.py:23
+#: stalls/modules/poll/form/setup_option_count.py:25
+#: stalls/modules/poll/form/setup_option_count.py:27
+#: stalls/modules/poll/form/setup_option_count.py:29
+#: stalls/modules/poll/form/setup_option_count.py:31
+#, python-format
+msgid "with %(num)d options"
+msgstr ""
+
+#: stalls/modules/poll/form/show_poll_result.py:18
+msgid "You have not joined any polls yet"
+msgstr ""
+
+#: stalls/modules/poll/form/show_poll_result.py:22
+msgid "Polls I Created"
+msgstr ""
+
+#: stalls/modules/poll/form/show_poll_result.py:26
+msgid "Polls I Joined"
+msgstr ""
+
+#: stalls/modules/poll/form/show_poll_result.py:35
+msgid "Polls Created"
+msgstr ""
+
+#: stalls/modules/poll/form/show_poll_result.py:39
+#: stalls/modules/poll/form/show_poll_result.py:52
+msgid "View Result"
+msgstr ""
+
+#: stalls/modules/poll/form/show_poll_result.py:48
+msgid "Polls Joined"
+msgstr ""
+
+#~ msgid "投票结果"
+#~ msgstr ""
+
+#~ msgid "操作失败"
+#~ msgstr ""
+
+#~ msgid "投票已失效"
+#~ msgstr ""
+
+#~ msgid "投票已过期"
+#~ msgstr ""
+
+#~ msgid "您已投票"
+#~ msgstr ""
+
+#~ msgid "[投票 \"%(desc)\" 的结果]($(url))"
+#~ msgstr ""
+
+#~ msgid "成功"
+#~ msgstr ""
+
+#~ msgid "投票"
+#~ msgstr ""
+
+#~ msgid "新建投票"
+#~ msgstr ""
+
+#~ msgid "取消"
+#~ msgstr ""
+
+#~ msgid "参数错误"
+#~ msgstr ""
+
+#~ msgid "你将创建 %(count) 个选项的投票"
+#~ msgstr ""
+
+#~ msgid "投票说明"
+#~ msgstr ""
+
+#~ msgid "选项 %(idx)"
+#~ msgstr ""
+
+#~ msgid "公开/匿名"
+#~ msgstr ""
+
+#~ msgid "公开"
+#~ msgstr ""
+
+#~ msgid "匿名"
+#~ msgstr ""
+
+#~ msgid "投票截止时间"
+#~ msgstr ""
+
+#~ msgid "参与投票的成员"
+#~ msgstr ""
+
+#~ msgid "接收讨论组"
+#~ msgstr ""
+
+#~ msgid "创建投票"
+#~ msgstr ""
+
+#~ msgid "取消投票"
+#~ msgstr ""
+
+#~ msgid "结束时间不合法"
+#~ msgstr ""
+
+#~ msgid "请选择投票选项"
+#~ msgstr ""
+
+#~ msgid "投票选项有误"
+#~ msgstr ""
+
+#~ msgid "投票不存在"
+#~ msgstr ""
+
+#~ msgid "投票成功"
+#~ msgstr ""
+
+#~ msgid "正在创建投票，请选择选项数量"
+#~ msgstr ""
+
+#~ msgid "选项数量"
+#~ msgstr ""
+
+#~ msgid "2 个"
+#~ msgstr ""
+
+#~ msgid "3 个"
+#~ msgstr ""
+
+#~ msgid "4 个"
+#~ msgstr ""
+
+#~ msgid "5 个"
+#~ msgstr ""
+
+#~ msgid "6 个"
+#~ msgstr ""
+
+#~ msgid "7 个"
+#~ msgstr ""
+
+#~ msgid "8 个"
+#~ msgstr ""
+
+#~ msgid "9 个"
+#~ msgstr ""
+
+#~ msgid "确定"
+#~ msgstr ""
+
+#~ msgid "您还没参与投票"
+#~ msgstr ""
+
+#~ msgid "我创建的投票"
+#~ msgstr ""
+
+#~ msgid "我参与的投票"
+#~ msgstr ""
+
+#~ msgid "选择创建的投票"
+#~ msgstr ""
+
+#~ msgid "查看结果"
+#~ msgstr ""
+
+#~ msgid "选择参与的投票"
+#~ msgstr ""
+

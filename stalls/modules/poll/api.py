@@ -6,6 +6,7 @@ from datetime import datetime
 import logging
 
 from flask import abort, request, url_for
+from flask_babel import lazy_gettext as _
 
 from stalls.blueprint import create_api_blueprint
 from stalls.modules.poll.form import create_show_poll_form
@@ -29,7 +30,7 @@ def handle_message():
     token = request.json['token']
     if request.json['text'] in (u'投票结果', 'result'):
         data = {
-            'text': '投票结果',
+            'text': _(u'Poll Result'),
             "vchannel_id": request.json['vchannel'],
             "form_url": url_for("poll.show_poll_result", _external=True),
         }
@@ -72,7 +73,7 @@ def handle_poll():
     response = process_create(payload)
     if response is None:
         logging.getLogger('poll').info('none respond')
-        return json_response(make_error(u'操作失败'))
+        return json_response(make_error(_('Operation Failed')))
     return json_response(response)
 
 
@@ -83,14 +84,14 @@ def get_poll():
     user_id = args['user_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(make_error(u'投票已失效'))
+        return json_response(make_error(_('Invalid Poll')))
 
     if datetime.utcnow() > poll.end_datetime:
-        return json_response(make_error(u'投票已过期'))
+        return json_response(make_error(_('Poll Expired')))
 
     us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
     if us:
-        return json_response(make_error(u'您已投票'))
+        return json_response(make_error(_('You have voted')))
 
     response = create_show_poll_form(poll)
 
@@ -103,10 +104,10 @@ def do_poll():
     id_ = args['poll_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(make_error(u'投票已失效'))
+        return json_response(make_error(_(u'Invalid Poll')))
 
     if datetime.utcnow() > poll.end_datetime:
-        return json_response(make_error(u'投票已过期'))
+        return json_response(make_error(_('Poll Expired')))
 
     payload = deepcopy(request.json)
     payload.update(args.to_dict())
@@ -114,7 +115,7 @@ def do_poll():
     response = process_vote(payload)
     if response is None:
         logging.getLogger('poll').info('none respond')
-        return json_response(make_error(u'操作失败'))
+        return json_response(make_error(_('Operation Failed')))
     return json_response(response)
 
 
@@ -154,8 +155,8 @@ def show_poll_result():
             data = {
                 'token': token,
                 'vchannel_id': vchannel_id,
-                'text': u'[投票 "{}" 的结果]({})'.format(
-                    poll.description, image_url),
+                'text': _('["%(desc)s" Result](%(url)s)',
+                          desc=poll.description, url=image_url),
                 'attachments': [
                     {
                         'images': [
@@ -170,10 +171,10 @@ def show_poll_result():
             }
             resp = send_message_to_bearychat(token, data)
             if 'error' in resp:
-                return json_response(make_error(u'操作失败'))
+                return json_response(make_error(_('Operation Failed')))
         else:
-            return json_response(make_error(u'操作失败'))
+            return json_response(make_error(_('Operation Failed')))
 
-        return json_response(make_error(u'成功'))
+        return json_response(make_error(_(u'Success')))
 
-    return json_response(make_error(u'操作失败'))
+    return json_response(make_error(_(u'Operation Failed')))
