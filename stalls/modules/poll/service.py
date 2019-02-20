@@ -194,7 +194,7 @@ def confirm_poll(payload):
 
     us = UserSelection.get_by_poll_id_and_user_id(poll_id, user_id)
     if us is not None:
-        return message.make_error(_(u'You have voted'))
+        return message.make_error(_('You have voted'))
 
     us = UserSelection(
         poll_id=poll.id,

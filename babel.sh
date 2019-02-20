@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $1 == "pot" ];then
-    pybabel extract -F ./stalls/babel.cfg -o ./stalls/messages.pot ./stalls
+    pybabel extract -F ./stalls/babel.cfg -k lazy_gettext -o ./stalls/messages.pot ./stalls
 fi
 
 if [ $1 == "init" ];then

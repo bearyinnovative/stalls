@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-20 19:34+0800\n"
+"POT-Creation-Date: 2019-02-20 23:36+0800\n"
 "PO-Revision-Date: 2019-02-20 19:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,35 +18,35 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: stalls/modules/poll/api.py:33
+#: stalls/modules/poll/api.py:34
 msgid "Poll Result"
 msgstr ""
 
-#: stalls/modules/poll/api.py:76 stalls/modules/poll/api.py:118
-#: stalls/modules/poll/api.py:174 stalls/modules/poll/api.py:176
-#: stalls/modules/poll/api.py:180
+#: stalls/modules/poll/api.py:77 stalls/modules/poll/api.py:119
+#: stalls/modules/poll/api.py:175 stalls/modules/poll/api.py:177
+#: stalls/modules/poll/api.py:181
 msgid "Operation Failed"
 msgstr ""
 
-#: stalls/modules/poll/api.py:87 stalls/modules/poll/api.py:107
+#: stalls/modules/poll/api.py:88 stalls/modules/poll/api.py:108
 #: stalls/modules/poll/service.py:193
 msgid "Invalid Poll"
 msgstr ""
 
-#: stalls/modules/poll/api.py:90 stalls/modules/poll/api.py:110
+#: stalls/modules/poll/api.py:91 stalls/modules/poll/api.py:111
 msgid "Poll Expired"
 msgstr ""
 
-#: stalls/modules/poll/api.py:94 stalls/modules/poll/service.py:197
+#: stalls/modules/poll/api.py:95 stalls/modules/poll/service.py:197
 msgid "You have voted"
 msgstr ""
 
-#: stalls/modules/poll/api.py:158
+#: stalls/modules/poll/api.py:159
 #, python-format
 msgid "[\"%(desc)s\" Result](%(url)s)"
 msgstr ""
 
-#: stalls/modules/poll/api.py:178
+#: stalls/modules/poll/api.py:179
 msgid "Success"
 msgstr ""
 

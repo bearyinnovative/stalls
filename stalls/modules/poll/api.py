@@ -7,13 +7,14 @@ import logging
 
 from flask import abort, request, url_for
 from flask_babel import gettext as _
+from flask_babel import lazy_gettext
 
 from stalls.blueprint import create_api_blueprint
 from stalls.modules.poll.form import create_show_poll_form
 from stalls.modules.poll.form import (create_ready_show_poll_result_form,
                                       create_show_created_poll_result_form,
                                       create_show_joined_poll_result_form)
-from stalls.modules.poll.message import start, make_error
+from stalls.modules.poll.message import get_start, make_error
 from stalls.modules.poll.model.poll import Poll, UserSelection
 from stalls.modules.poll.service import process_create, process_vote
 from stalls.modules.poll.utils import (create_result_chart,
@@ -30,7 +31,7 @@ def handle_message():
     token = request.json['token']
     if request.json['text'] in (u'投票结果', 'result'):
         data = {
-            'text': _(u'Poll Result'),
+            'text': lazy_gettext('Poll Result'),
             "vchannel_id": request.json['vchannel'],
             "form_url": url_for("poll.show_poll_result", _external=True),
         }
@@ -62,7 +63,7 @@ def preview_poll():
 
 @bp.route('/bearychat/poll')
 def start_poll():
-    return json_response(start)
+    return json_response(get_start())
 
 
 @bp.route('/bearychat/poll', methods=['POST'])
@@ -104,7 +105,7 @@ def do_poll():
     id_ = args['poll_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(make_error(_(u'Invalid Poll')))
+        return json_response(make_error(_('Invalid Poll')))
 
     if datetime.utcnow() > poll.end_datetime:
         return json_response(make_error(_('Poll Expired')))
@@ -175,6 +176,6 @@ def show_poll_result():
         else:
             return json_response(make_error(_('Operation Failed')))
 
-        return json_response(make_error(_(u'Success')))
+        return json_response(make_error(_('Success')))
 
-    return json_response(make_error(_(u'Operation Failed')))
+    return json_response(make_error(_('Operation Failed')))

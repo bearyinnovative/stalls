@@ -32,8 +32,8 @@ def create_form():
                                       value=9),
                                ]))
     form.add_actions(
-        PrimaryAction(name='select-option-count', text=_(u'Confirm')),
-        DangerAction(name='cancel-select-option-count', text=_(u'Cancel')),
+        PrimaryAction(name='select-option-count', text=_('Confirm')),
+        DangerAction(name='cancel-select-option-count', text=_('Cancel')),
     )
     return form.render()
 
