@@ -9,7 +9,7 @@ from component import Select, Option, DateSelect, ChannelSelect
 from component.action import PrimaryAction, DangerAction
 from envcfg.raw import stalls as config
 from flask import url_for
-from flask_babel import lazy_gettext as _
+from flask_babel import gettext as _
 
 from stalls.extensions import db
 from stalls.modules.poll import message

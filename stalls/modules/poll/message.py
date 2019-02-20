@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask_babel import lazy_gettext as _
+from flask_babel import gettext as _
 
 start = {
     "version": "1.0",
