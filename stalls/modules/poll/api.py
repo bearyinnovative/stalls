@@ -134,15 +134,15 @@ def show_poll_result():
     payload.update(args.to_dict())
     user_id = args['user_id']
 
-    if payload['action'] == 'show-created-poll-result':
+    if payload['action'] == 'poll/show-created-result':
         form = create_show_created_poll_result_form(user_id)
         return json_response(form)
 
-    if payload['action'] == 'show-joined-poll-result':
+    if payload['action'] == 'poll/show-joined-result':
         form = create_show_joined_poll_result_form(user_id)
         return json_response(form)
 
-    if payload['action'] == 'show-poll-result':
+    if payload['action'] == 'poll/show-result':
         data = payload['data']
         poll_id = data.get('poll_id')
         poll = Poll.query.get(poll_id)

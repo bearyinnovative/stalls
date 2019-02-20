@@ -40,3 +40,14 @@ Edit `.env` according to your envrionments.
 #### 8. Start server
 
 `$ honcho start`
+
+## Update translations
+
+```sh
+$ ./babel.sh pot
+$ ./babel.sh update
+
+(edit translations files)
+
+$ ./babel.sh build
+```

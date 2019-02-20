@@ -19,11 +19,11 @@ def create_ready_show_poll_result_form(user_id):
 
     if created_poll_count > 0:
         form.add_action(
-            Action(name='show-created-poll-result', text=_('Polls I Created')))
+            Action(name='poll/show-created-result', text=_('Polls I Created')))
 
     if joined_poll_count > 0:
         form.add_action(
-            Action(name='show-joined-poll-result', text=_('Polls I Joined')))
+            Action(name='poll/show-joined-result', text=_('Polls I Joined')))
 
     return form.render()
 
@@ -32,11 +32,11 @@ def create_show_created_poll_result_form(user_id):
     polls = Poll.get_multi_by_user_id(user_id)
     options = [Option(text=each.description, value=each.id) for each in polls]
     form = Form()
-    form.add_field(Select(label=_('Polls Created'),
+    form.add_field(Select(label=_('Polls I Created'),
                           required=True,
                           name='poll_id',
                           options=options))
-    form.add_action(Action(name='show-poll-result', text=_('View Result')))
+    form.add_action(Action(name='poll/show-result', text=_('View Result')))
     return form.render()
 
 
@@ -45,9 +45,9 @@ def create_show_joined_poll_result_form(user_id):
     polls = Poll.get_multi_by_ids(poll_ids)
     options = [Option(text=each.description, value=each.id) for each in polls]
     form = Form()
-    form.add_field(Select(label=_('Polls Joined'),
+    form.add_field(Select(label=_('Polls I Joined'),
                           required=True,
                           name='poll_id',
                           options=options))
-    form.add_action(Action(name='show-poll-result', text=_('View Result')))
+    form.add_action(Action(name='poll/show-result', text=_('View Result')))
     return form.render()

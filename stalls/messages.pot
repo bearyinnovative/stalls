@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-20 23:36+0800\n"
+"POT-Creation-Date: 2019-02-20 23:52+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,7 +28,7 @@ msgid "Operation Failed"
 msgstr ""
 
 #: stalls/modules/poll/api.py:88 stalls/modules/poll/api.py:108
-#: stalls/modules/poll/service.py:193
+#: stalls/modules/poll/service.py:194
 msgid "Invalid Poll"
 msgstr ""
 
@@ -36,7 +36,7 @@ msgstr ""
 msgid "Poll Expired"
 msgstr ""
 
-#: stalls/modules/poll/api.py:95 stalls/modules/poll/service.py:197
+#: stalls/modules/poll/api.py:95 stalls/modules/poll/service.py:198
 msgid "You have voted"
 msgstr ""
 
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Success"
 msgstr ""
 
-#: stalls/modules/poll/message.py:10
+#: stalls/modules/poll/message.py:11
 msgid "Create Poll"
 msgstr ""
 
@@ -106,15 +106,15 @@ msgstr ""
 msgid "Invalid Expiration"
 msgstr ""
 
-#: stalls/modules/poll/service.py:184
+#: stalls/modules/poll/service.py:185
 msgid "Please Choose Your Option"
 msgstr ""
 
-#: stalls/modules/poll/service.py:189
+#: stalls/modules/poll/service.py:190
 msgid "Invalid Option"
 msgstr ""
 
-#: stalls/modules/poll/service.py:207
+#: stalls/modules/poll/service.py:208
 msgid "Opeartion Success"
 msgstr ""
 
@@ -143,23 +143,17 @@ msgid "You have not joined any polls yet"
 msgstr ""
 
 #: stalls/modules/poll/form/show_poll_result.py:22
+#: stalls/modules/poll/form/show_poll_result.py:35
 msgid "Polls I Created"
 msgstr ""
 
 #: stalls/modules/poll/form/show_poll_result.py:26
+#: stalls/modules/poll/form/show_poll_result.py:48
 msgid "Polls I Joined"
-msgstr ""
-
-#: stalls/modules/poll/form/show_poll_result.py:35
-msgid "Polls Created"
 msgstr ""
 
 #: stalls/modules/poll/form/show_poll_result.py:39
 #: stalls/modules/poll/form/show_poll_result.py:52
 msgid "View Result"
-msgstr ""
-
-#: stalls/modules/poll/form/show_poll_result.py:48
-msgid "Polls Joined"
 msgstr ""
 

@@ -2,12 +2,12 @@
 
 from flask_babel import gettext as _
 
-def get_start():
+def get_start(*args, **kwargs):
     return {
         "version": "1.0",
         "actions": [
             {
-                "name": "create",
+                "name": "poll/setup-form",
                 "text": _('Create Poll'),
                 "kind": "normal"
             }

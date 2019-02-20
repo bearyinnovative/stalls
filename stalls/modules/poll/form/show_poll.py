@@ -22,6 +22,6 @@ def create_show_poll_form(poll):
     )
 
     form.add_actions(
-        PrimaryAction(name='confirm-poll', text=_('Confirm')),
+        PrimaryAction(name='poll/confirm-poll', text=_('Confirm')),
     )
     return form.render()

@@ -62,8 +62,8 @@ def select_count_option(payload):
                     DateSelect(name='end_datetime', label=_('Expiration')),
                     ChannelSelect(name='channel', label=_('Target Channel')))
 
-    form.add_actions(PrimaryAction(name='create-poll', text=_('Confirm')),
-                     DangerAction(name='cancel-create-poll', text=_('Cancel')))
+    form.add_actions(PrimaryAction(name='poll/confirm-create', text=_('Confirm')),
+                     DangerAction(name='poll/cancel-create', text=_('Cancel')))
 
     return form.render()
 
@@ -125,11 +125,12 @@ def create_poll(payload):
 
 
 create_handlers = {
-    'create': setup_option_count,
-    'cancel-create': cancel,
-    'select-option-count': select_count_option,
-    'cancel-select-option-count': cancel_select_option_count,
-    'create-poll': create_poll,
+    'poll/setup-form': setup_option_count,
+    'poll/cancel-create': cancel,
+    'poll/select-option-count': select_count_option,
+    'poll/cancel-select-option-count': cancel_select_option_count,
+    'poll/confirm-create': create_poll,
+    'poll/cancel-create': message.get_start,
 }
 
 
@@ -208,5 +209,5 @@ def confirm_poll(payload):
 
 
 vote_handlers = {
-    'confirm-poll': confirm_poll,
+    'poll/confirm-poll': confirm_poll,
 }
