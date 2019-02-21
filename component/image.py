@@ -10,7 +10,7 @@ class Image(Action):
     type_ = 'section'
 
     def __init__(self, **kwargs):
-        self.title = kwargs.get('title')
+        self.title = kwargs.get('title', '')
         self.url = kwargs.get('url')
 
         self._required_props = ('title', 'url')
