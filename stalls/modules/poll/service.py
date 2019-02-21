@@ -29,7 +29,7 @@ def setup_option_count(payload):
 
 
 def cancel(payload):
-    return message.make_error(_("Cancel"))
+    return form.make_error(_("Cancel"))
 
 
 def select_count_option(payload):
@@ -38,12 +38,12 @@ def select_count_option(payload):
     try:
         option_count = int(data.get('option_count'))
     except ValueError:
-        return message.make_error(_('Parameters Error'))
+        return form.make_error(_('Parameters Error'))
     return form.create_poll_form(option_count)
 
 
 def cancel_select_option_count(payload):
-    return message.make_error(_(u"Cancel"))
+    return form.make_error(_(u"Cancel"))
 
 
 def create_poll(payload):
@@ -56,7 +56,7 @@ def create_poll(payload):
     try:
         option_count = int(data.get('option_count'))
     except ValueError:
-        return message.make_error(_("Parameters Error"))
+        return form.make_error(_("Parameters Error"))
 
     options = []
     for idx in range(option_count):
@@ -66,7 +66,7 @@ def create_poll(payload):
     if raw_end_datetime:
         end_datetime = datetime.fromtimestamp(int(raw_end_datetime))
         if end_datetime <= datetime.utcnow():
-            return message.make_error(_("Invalid Expiration"))
+            return form.make_error(_("Invalid Expiration"))
 
     poll = Poll(
         hubot_token=hubot_token,
@@ -80,8 +80,8 @@ def create_poll(payload):
     )
 
     poll.options = options
-    poll.members = filter(None, [data.get('member')])
-    poll.channels = filter(None, [data.get('channel')])
+    poll.members = filter(None, data.get('members', []))
+    poll.channels = filter(None, data.get('channels', []))
     poll.save()
 
     notify_members(payload, poll)
@@ -95,7 +95,7 @@ def create_poll(payload):
         option.save(_commit=False)
     db.session.commit()
 
-    return message.make_error("OK")
+    return form.make_error("OK")
 
 
 create_handlers = {
@@ -156,20 +156,20 @@ def confirm_poll(payload):
     poll_option_id = data.get('poll_option')
 
     if poll_option_id is None:
-        return message.make_error(_('Please Choose Your Option'))
+        return form.make_error(_('Please Choose Your Option'))
 
     poll_option = PollOption.query.get(poll_option_id)
 
     if poll_option is None:
-        return message.make_error(_('Invalid Option'))
+        return form.make_error(_('Invalid Option'))
 
     poll = Poll.query.get(poll_id)
     if (poll is None or poll.team_id != team_id):
-        return message.make_error(_('Invalid Poll'))
+        return form.make_error(_('Invalid Poll'))
 
     us = UserSelection.get_by_poll_id_and_user_id(poll_id, user_id)
     if us is not None:
-        return message.make_error(_('You have voted'))
+        return form.make_error(_('You have voted'))
 
     us = UserSelection(
         poll_id=poll.id,
@@ -179,7 +179,7 @@ def confirm_poll(payload):
     )
     us.save()
 
-    return message.make_error(_('Opeartion Success'))
+    return form.make_error(_('Opeartion Success'))
 
 
 vote_handlers = {

@@ -14,7 +14,7 @@ from stalls.modules.poll.form import (create_ready_show_poll_result_form,
                                       create_show_created_poll_result_form,
                                       create_show_joined_poll_result_form)
 from stalls.modules.poll.form.start import getting_start
-from stalls.modules.poll.message import make_error
+from stalls.modules.poll.form.create_error import create_error
 from stalls.modules.poll.model.poll import Poll, UserSelection
 from stalls.modules.poll.service import process_create, process_vote
 from stalls.modules.poll.utils import (create_result_chart,
@@ -74,7 +74,7 @@ def handle_poll():
     response = process_create(payload)
     if response is None:
         logging.getLogger('poll').info('none respond')
-        return json_response(make_error(_('Operation Failed')))
+        return json_response(create_error(_('Operation Failed')))
     return json_response(response)
 
 
@@ -85,14 +85,14 @@ def get_poll():
     user_id = args['user_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(make_error(_('Invalid Poll')))
+        return json_response(create_error(_('Invalid Poll')))
 
     if datetime.utcnow() > poll.end_datetime:
-        return json_response(make_error(_('Poll Expired')))
+        return json_response(create_error(_('Poll Expired')))
 
     us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
     if us:
-        return json_response(make_error(_('You have voted')))
+        return json_response(create_error(_('You have voted')))
 
     response = create_show_poll_form(poll)
 
@@ -105,10 +105,10 @@ def do_poll():
     id_ = args['poll_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(make_error(_('Invalid Poll')))
+        return json_response(create_error(_('Invalid Poll')))
 
     if datetime.utcnow() > poll.end_datetime:
-        return json_response(make_error(_('Poll Expired')))
+        return json_response(create_error(_('Poll Expired')))
 
     payload = deepcopy(request.json)
     payload.update(args.to_dict())
@@ -116,7 +116,7 @@ def do_poll():
     response = process_vote(payload)
     if response is None:
         logging.getLogger('poll').info('none respond')
-        return json_response(make_error(_('Operation Failed')))
+        return json_response(create_error(_('Operation Failed')))
     return json_response(response)
 
 
@@ -172,10 +172,10 @@ def show_poll_result():
             }
             resp = send_message_to_bearychat(token, data)
             if 'error' in resp:
-                return json_response(make_error(_('Operation Failed')))
+                return json_response(create_error(_('Operation Failed')))
         else:
-            return json_response(make_error(_('Operation Failed')))
+            return json_response(create_error(_('Operation Failed')))
 
-        return json_response(make_error(_('Success')))
+        return json_response(create_error(_('Success')))
 
-    return json_response(make_error(_('Operation Failed')))
+    return json_response(create_error(_('Operation Failed')))
