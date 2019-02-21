@@ -56,7 +56,7 @@ def create_show_joined_poll_result_form(user_id):
     return form.render()
 
 
-def show_poll_result(poll):
+def create_show_poll_result(poll):
     form = Form()
     context = Context()
     context.append('Poll Created')
