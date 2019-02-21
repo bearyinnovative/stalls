@@ -15,5 +15,5 @@ class ChannelSelect(Action):
         self.placeholder = kwargs.get('placeholder')
         self.multi = kwargs.get('multi')
 
-        self._required_props = ('name')
+        self._required_props = ('name', )
         self._optional_props = ('label', 'placeholder', 'multi')

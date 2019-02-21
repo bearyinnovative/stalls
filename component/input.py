@@ -10,10 +10,11 @@ class Input(Action):
     type_ = 'input'
 
     def __init__(self, **kwargs):
-        self._required_props = ('name')
-        self._optional_props = ('label', 'value', 'hidden', 'placeholder')
+        self.name = kwargs.get('name')
+        self.label = kwargs.get('label')
+        self.value = kwargs.get('value')
+        self.hidden = kwargs.get('hidden', False)
+        self.placeholder = kwargs.get('placeholder')
 
-        for f in self._required_props + self._optional_props:
-            v = getattr(self, f)
-            if v is not None:
-                setattr(self, f, v)
+        self._required_props = ('name', )
+        self._optional_props = ('label', 'value', 'hidden', 'placeholder')

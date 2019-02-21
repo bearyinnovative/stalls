@@ -14,5 +14,5 @@ class DateSelect(Action):
         self.label = kwargs.get('label')
         self.placeholder = kwargs.get('placeholder')
 
-        self._required_props = ('name')
+        self._required_props = ('name', )
         self._optional_props = ('label', 'placeholder')

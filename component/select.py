@@ -14,13 +14,13 @@ class Select(Action):
         self.label = kwargs.get('label')
         self.placeholder = kwargs.get('placeholder', '')
         self.multi = kwargs.get('multi', False)
-        self.options = kwargs.options()
+        self.options = map(lambda x: x.render(), kwargs.get('options', []))
 
-        self._required_props = ('name')
+        self._required_props = ('name', )
         self._optional_props = ('label', 'placeholder', 'multi', 'options')
 
 
-class SelectOption(Action):
+class SelectOption(object):
 
     def __init__(self, **kwargs):
         self.text = kwargs.get('text')
@@ -28,3 +28,6 @@ class SelectOption(Action):
 
         self._required_props = ('text', 'value')
         self._optional_props = []
+
+    def render(self):
+        return {'text': self.text, 'value': self.value}

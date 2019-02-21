@@ -8,7 +8,7 @@ from component import PrimarySubmit, DangerSubmit
 
 
 def build_option(num):
-    return SelectOption(_(text='with %(num)d options', num=num), value=num)
+    return SelectOption(text=_('with %(num)d options', num=num), value=num)
 
 
 def create_setup_option_form():

@@ -15,7 +15,7 @@ class Checkbox(Action):
         self.elements = []
 
         self._required_props = ('name', 'elements')
-        self._optional_props = ('label')
+        self._optional_props = ('label', )
 
     def append(self, name, text):
         self.elements.append({'name': name, 'text': text})
