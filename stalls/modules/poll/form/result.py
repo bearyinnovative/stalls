@@ -80,7 +80,7 @@ def show_joined_polls(user_id):
 def show_poll_result(poll):
     form = Form()
     context = Context()
-    context.append('Poll Created')
+    context.append(_('Poll Created'))
 
     form.add_actions(
         context,
@@ -91,7 +91,8 @@ def show_poll_result(poll):
                         description=poll.description)),
 
         Section(value=_('Poll Expiration: %(expiration)s',
-                expiration=poll.end_datetime.strftime("%Y-%m-%d %H:%M:%S"))),
+                        expiration=poll.end_datetime.strftime(
+                            "%Y-%m-%d %H:%M:%S"))),
     )
 
     poll_options = PollOption.get_multi_by_poll_id(poll.id)
