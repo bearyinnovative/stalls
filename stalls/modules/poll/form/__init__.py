@@ -1,8 +1,6 @@
-from .create_poll import create_poll_form    # noqa
-from .create_error import create_error    # noqa
-from .setup_option_count import create_setup_option_form    # noqa
-from .show_poll import create_show_poll_form    # noqa
-from .show_poll_result import (create_ready_show_poll_result_form,    # noqa
-                               create_show_created_poll_result_form,    # noqa
-                               create_show_joined_poll_result_form,    # noqa
-                               create_show_poll_result)    # noqa
+from .msg import make_msg    # noqa
+from .poll import make_poll_form, make_option_count_form    # noqa
+from .start import make_start_form    # noqa
+from .result import (show_poll, make_ready_form,    # noqa
+                     show_created_polls, show_joined_polls,    # noqa
+                     show_poll_result)    # noqa

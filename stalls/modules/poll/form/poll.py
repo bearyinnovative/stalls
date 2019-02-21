@@ -2,15 +2,33 @@
 
 from flask_babel import gettext as _
 
-from component import Form, Section, Input
-from component import Select, SelectOption
-from component import ChannelSelect, MemberSelect, DateSelect
-from component import PrimarySubmit
+from component import (Form, Section, Input,
+                       Select, SelectOption,
+                       ChannelSelect, DateSelect,
+                       Submit, PrimarySubmit)
 
 from stalls.modules.poll.model import submit
 
 
-def create_poll_form(option_count):
+def make_option_count_form():
+    def build_option(num):
+        return SelectOption(text=_('with %(num)d options', num=num), value=num)
+
+    form = Form()
+    form.add_actions(
+        Section(value=_('Your are creating a poll, '
+                        'how many options do you want?')),
+
+        Select(name='option_count', label=_('Option Count'),
+               placeholder=_('Please select the number of options'),
+               options=[build_option(n) for n in range(2, 9 + 1)]),
+
+        Submit(name=submit.SELECT_OPTION_COUNT, text=_('Next')),
+    )
+    return form.render()
+
+
+def make_poll_form(option_count):
     form = Form()
     form.add_actions(
         Section(value=_('Your are creating a poll with %(count)d options',

@@ -11,6 +11,7 @@ from flask_babel import gettext as _
 from stalls.blueprint import create_api_blueprint
 from stalls.modules.poll import form
 
+from stalls.modules.poll.model import submit
 from stalls.modules.poll.model.poll import Poll, UserSelection
 from stalls.modules.poll.service import process_create, process_vote
 from stalls.modules.poll.utils import (create_result_chart,
@@ -58,7 +59,7 @@ def preview_poll():
 
 @bp.route('/bearychat/poll')
 def start_poll():
-    return json_response(form.getting_start())
+    return json_response(form.make_start_form())
 
 
 @bp.route('/bearychat/poll', methods=['POST'])
@@ -69,7 +70,7 @@ def handle_poll():
     response = process_create(payload)
     if response is None:
         logging.getLogger('poll').info('none respond')
-        return json_response(form.create_error(_('Operation Failed')))
+        return json_response(form.make_msg(_('Operation Failed')))
     return json_response(response)
 
 
@@ -80,16 +81,16 @@ def get_poll():
     user_id = args['user_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(form.create_error(_('Invalid Poll')))
+        return json_response(form.make_msg(_('Invalid Poll')))
 
     if datetime.utcnow() > poll.end_datetime:
-        return json_response(form.create_error(_('Poll Expired')))
+        return json_response(form.make_msg(_('Poll Expired')))
 
     us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
     if us:
-        return json_response(form.create_error(_('You have voted')))
-
-    response = form.create_show_poll_form(poll)
+        response = form.show_poll_result(poll)
+    else:
+        response = form.show_poll(poll)
 
     return json_response(response)
 
@@ -100,10 +101,10 @@ def do_poll():
     id_ = args['poll_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(form.create_error(_('Invalid Poll')))
+        return json_response(form.make_msg(_('Invalid Poll')))
 
     if datetime.utcnow() > poll.end_datetime:
-        return json_response(form.create_error(_('Poll Expired')))
+        return json_response(form.make_msg(_('Poll Expired')))
 
     payload = deepcopy(request.json)
     payload.update(args.to_dict())
@@ -111,7 +112,7 @@ def do_poll():
     response = process_vote(payload)
     if response is None:
         logging.getLogger('poll').info('none respond')
-        return json_response(form.create_error(_('Operation Failed')))
+        return json_response(form.make_msg(_('Operation Failed')))
     return json_response(response)
 
 
@@ -119,7 +120,7 @@ def do_poll():
 def get_poll_result():
     args = request.args
     user_id = args['user_id']
-    return json_response(form.create_ready_show_poll_result_form(user_id))
+    return json_response(form.make_ready_form(user_id))
 
 
 @bp.route('/bearychat/poll.result', methods=['POST'])
@@ -129,20 +130,20 @@ def show_poll_result():
     payload.update(args.to_dict())
     user_id = args['user_id']
 
-    if payload['action'] == 'poll/show-created-result':
+    if payload['action'] == submit.SHOW_CREATED_RESULT:
         return json_response(
-            form.create_show_created_poll_result_form(user_id))
+            form.show_created_polls(user_id))
 
-    if payload['action'] == 'poll/show-joined-result':
-        return json_response(form.create_show_joined_poll_result_form(user_id))
+    if payload['action'] == submit.SHOW_CREATED_RESULT:
+        return json_response(form.show_joined_polls(user_id))
 
-    if payload['action'] == 'poll/show-result':
+    if payload['action'] == submit.SHOW_RESULT:
         data = payload['data']
         poll_id = data.get('poll_id')
         poll = Poll.query.get(poll_id)
         if poll:
-            return form.create_show_poll_result(poll)
+            return form.show_poll_result(poll)
         else:
-            return json_response(form.create_error(_('Operation Failed')))
+            return json_response(form.make_msg(_('Operation Failed')))
 
-    return json_response(form.create_error(_('Operation Failed')))
+    return json_response(form.make_msg(_('Operation Failed')))

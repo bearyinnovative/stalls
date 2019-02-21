@@ -14,7 +14,7 @@ class Context(Action):
         self._required_props = ('elements', )
         self._optional_props = []
 
-    def append(self, text, is_markdown=False):
+    def append(self, text, is_markdown=True):
         self.elements.append({
             'type': 'text',
             'text': text,

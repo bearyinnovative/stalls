@@ -3,14 +3,35 @@
 from flask import url_for
 from flask_babel import gettext as _
 
-from component import (Form, Context, Section, Input,
-                       Select, SelectOption, Image, Submit)
+from component import (Form, Section, Context, Input,
+                       Select, SelectOption, Image,
+                       Submit, PrimarySubmit)
 
 from stalls.modules.poll.model import submit
 from stalls.modules.poll.model.poll import Poll, UserSelection, PollOption
 
 
-def create_ready_show_poll_result_form(user_id):
+def show_poll(poll):
+    poll_options = PollOption.get_multi_by_poll_id(poll.id)
+
+    options = [SelectOption(text=each.label, value=each.id)
+               for each in poll_options]
+
+    form = Form()
+    form.add_actions(
+        Section(label=_('Description'), value=poll.description),
+
+        Section(label=_('Poll Expiration'),
+                value=poll.end_datetime.strftime("%Y-%m-%d %H:%M:%S")),
+
+        Select(name="poll_option", options=options),
+
+        PrimarySubmit(name=submit.CONFIRM_POLL, text=_('Confirm')),
+    )
+    return form.render()
+
+
+def make_ready_form(user_id):
     created_poll_count = Poll.count_by_user_id(user_id)
     joined_poll_count = UserSelection.count_by_user_id(user_id)
 
@@ -30,7 +51,7 @@ def create_ready_show_poll_result_form(user_id):
     return form.render()
 
 
-def create_show_created_poll_result_form(user_id):
+def show_created_polls(user_id):
     polls = Poll.get_multi_by_user_id(user_id)
     options = [SelectOption(text=each.description, value=each.id)
                for each in polls]
@@ -43,7 +64,7 @@ def create_show_created_poll_result_form(user_id):
     return form.render()
 
 
-def create_show_joined_poll_result_form(user_id):
+def show_joined_polls(user_id):
     poll_ids = map(lambda x: x.id, UserSelection.get_multi_by_user_id(user_id))
     polls = Poll.get_multi_by_ids(poll_ids)
     options = [SelectOption(text=each.description, value=each.id)
@@ -56,7 +77,7 @@ def create_show_joined_poll_result_form(user_id):
     return form.render()
 
 
-def create_show_poll_result(poll):
+def show_poll_result(poll):
     form = Form()
     context = Context()
     context.append('Poll Created')

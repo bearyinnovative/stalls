@@ -25,21 +25,23 @@ def process_create(payload):
 
 
 def setup_option_count(payload):
-    return form.create_setup_option_form()
+    return form.make_option_count_form()
 
 
 def select_count_option(payload):
     data = payload.get('data')
     option_count_arr = data.get('option_count', [])
-    if len(option_count_arr) != 1:
-        return form.create_error(_('Parameters Error'))
+
+    if (not isinstance(option_count_arr, list)) or len(option_count_arr) != 1:
+        return form.make_msg(_('Parameters Error'))
 
     option_count = option_count_arr[0]
     try:
         option_count = int(option_count)
     except ValueError:
-        return form.create_error(_('Parameters Error'))
-    return form.create_poll_form(option_count)
+        return form.make_msg(_('Parameters Error'))
+
+    return form.make_poll_form(option_count)
 
 
 def create_poll(payload):
@@ -52,21 +54,24 @@ def create_poll(payload):
     try:
         option_count = int(data.get('option_count'))
     except ValueError:
-        return form.create_error(_("Parameters Error"))
+        return form.make_msg(_("Parameters Error"))
 
     options = []
     for idx in range(option_count):
         options.append(data['option_{}'.format(idx+1)])
 
-    raw_end_timestamp = data.get('end_timestamp', None)
+    raw_end_timestamp = data.get('end_timestamp', 0)
     try:
         end_timestamp = int(raw_end_timestamp)
-    except (ValueError, KeyError):
-        return form.create_error(_("Invalid Expiration"))
+    except (ValueError, TypeError) as e:
+        logging.getLogger('stalls').info(
+            "end_timetamp {} error: {}".format(raw_end_timestamp,
+                                               e.get_message()))
+        return form.make_msg(_("Invalid Expiration"))
 
     end_datetime = datetime.fromtimestamp(end_timestamp)
     if end_datetime <= datetime.utcnow():
-        return form.create_error(_("Invalid Expiration"))
+        return form.make_msg(_("Invalid Expiration"))
 
     poll = Poll(
         hubot_token=hubot_token,
@@ -105,7 +110,7 @@ def refresh_poll(payload):
     poll = Poll.get_by_visit_key(token)
     if poll:
         return form.show_poll_result(poll)
-    return form.create_error(_('Poll Not Found'))
+    return form.make_msg(_('Poll Not Found'))
 
 
 create_handlers = {
@@ -164,22 +169,22 @@ def confirm_poll(payload):
     poll_option_ids = data.get('poll_option', [])
 
     if len(poll_option_ids) != 1:
-        return form.create_error(_('Please Choose Your Option'))
+        return form.make_msg(_('Please Choose Your Option'))
 
     poll_option_id = poll_option_ids[0]
 
     poll_option = PollOption.query.get(poll_option_id)
 
     if poll_option is None:
-        return form.create_error(_('Invalid Option'))
+        return form.make_msg(_('Invalid Option'))
 
     poll = Poll.query.get(poll_id)
     if (poll is None or poll.team_id != team_id):
-        return form.create_error(_('Invalid Poll'))
+        return form.make_msg(_('Invalid Poll'))
 
     us = UserSelection.get_by_poll_id_and_user_id(poll_id, user_id)
     if us is not None:
-        return form.create_error(_('You have voted'))
+        return form.make_msg(_('You have voted'))
 
     us = UserSelection(
         poll_id=poll.id,
@@ -189,9 +194,9 @@ def confirm_poll(payload):
     )
     us.save()
 
-    return form.create_error(_('Opeartion Success'))
+    return form.make_msg(_('Opeartion Success'))
 
 
 vote_handlers = {
-    'poll/confirm-poll': confirm_poll,
+    submit.CONFIRM_POLL: confirm_poll,
 }
