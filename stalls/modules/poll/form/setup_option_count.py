@@ -18,10 +18,9 @@ def create_setup_option_form():
                         'how many options do you want?')),
 
         Select(name='option_count', label=_('Option Count'),
+               placeholder=_('Please select the number of options'),
                options=[build_option(n) for n in range(2, 9 + 1)]),
 
-        PrimarySubmit(name='poll/select-option-count', text=_('Confirm')),
-
-        DangerSubmit(name='poll/cancel-select-option-count', text=_('Cancel')),
+        Submit(name='poll/select-option-count', text=_('Next')),
     )
     return form.render()
