@@ -168,19 +168,19 @@ def confirm_poll(payload):
     data = payload['data']
     poll_option_ids = data.get('poll_option', [])
 
-    if len(poll_option_ids) != 1:
+    if (not isinstance(poll_option_ids, list)) or len(poll_option_ids) != 1:
         return form.make_msg(_('Please Choose Your Option'))
 
     poll_option_id = poll_option_ids[0]
 
     poll_option = PollOption.query.get(poll_option_id)
 
-    if poll_option is None:
-        return form.make_msg(_('Invalid Option'))
-
     poll = Poll.query.get(poll_id)
     if (poll is None or poll.team_id != team_id):
         return form.make_msg(_('Invalid Poll'))
+
+    if poll_option is None or poll_option.poll_id != poll.id:
+        return form.make_msg(_('Invalid Option'))
 
     us = UserSelection.get_by_poll_id_and_user_id(poll_id, user_id)
     if us is not None:
