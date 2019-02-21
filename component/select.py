@@ -2,28 +2,29 @@
 
 from __future__ import absolute_import
 
-from component.base import Field, FieldError    # noqa
+from component.base import Action
 
 
-class Select(Field):
+class Select(Action):
 
     type_ = 'select'
 
     def __init__(self, **kwargs):
         self.name = kwargs.get('name')
         self.label = kwargs.get('label')
-        self.required = kwargs.get('required')
+        self.placeholder = kwargs.get('placeholder', '')
+        self.multi = kwargs.get('multi', False)
+        self.options = kwargs.options()
 
-        self._props = {}
-        self._props['defaultValue'] = kwargs.get('default_value')
-        self._props['hidden'] = kwargs.get('hidden')
-        self._props['disabled'] = kwargs.get('disabled')
-        self._props['placeholder'] = kwargs.get('placeholder')
-        self._props['description'] = kwargs.get('description')
+        self._required_props = ('name')
+        self._optional_props = ('label', 'placeholder', 'multi', 'options')
 
-        option_url = kwargs.get('option_url')
-        if option_url:
-            self._props['option_url'] = kwargs.get('option_url')
-        else:
-            options = kwargs.get('options', [])
-            self._props['options'] = map(lambda x: x.render(), options)
+
+class SelectOption(Action):
+
+    def __init__(self, **kwargs):
+        self.text = kwargs.get('text')
+        self.value = kwargs.get('value')
+
+        self._required_props = ('text', 'value')
+        self._optional_props = []

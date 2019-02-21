@@ -2,8 +2,8 @@
 
 from flask_babel import gettext as _
 
-from component import Form, Select, Option, Text
-from component.action import Action
+from component import Form, Section, Select, SelectOption
+from component import Submit
 
 from stalls.modules.poll.model.poll import Poll, UserSelection
 
@@ -15,39 +15,40 @@ def create_ready_show_poll_result_form(user_id):
     form = Form()
 
     if created_poll_count + joined_poll_count == 0:
-        form.add_field(Text(value=_("You have not joined any polls yet")))
+        form.add_action(Section(value=_("You have not joined any polls yet")))
 
     if created_poll_count > 0:
         form.add_action(
-            Action(name='poll/show-created-result', text=_('Polls I Created')))
+            Submit(name='poll/show-created-result', text=_('Polls I Created')))
 
     if joined_poll_count > 0:
         form.add_action(
-            Action(name='poll/show-joined-result', text=_('Polls I Joined')))
+            Submit(name='poll/show-joined-result', text=_('Polls I Joined')))
 
     return form.render()
 
 
 def create_show_created_poll_result_form(user_id):
     polls = Poll.get_multi_by_user_id(user_id)
-    options = [Option(text=each.description, value=each.id) for each in polls]
+    options = [SelectOption(text=each.description, value=each.id)
+               for each in polls]
     form = Form()
-    form.add_field(Select(label=_('Polls I Created'),
-                          required=True,
-                          name='poll_id',
-                          options=options))
-    form.add_action(Action(name='poll/show-result', text=_('View Result')))
+    form.add_actions(
+        Select(label=_('Polls I Created'), required=True, name='poll_id',
+               options=options),
+
+        Submit(name='poll/show-result', text=_('View Result')))
     return form.render()
 
 
 def create_show_joined_poll_result_form(user_id):
     poll_ids = map(lambda x: x.id, UserSelection.get_multi_by_user_id(user_id))
     polls = Poll.get_multi_by_ids(poll_ids)
-    options = [Option(text=each.description, value=each.id) for each in polls]
+    options = [SelectOption(text=each.description, value=each.id)
+               for each in polls]
     form = Form()
-    form.add_field(Select(label=_('Polls I Joined'),
-                          required=True,
-                          name='poll_id',
-                          options=options))
-    form.add_action(Action(name='poll/show-result', text=_('View Result')))
+    form.add_actions(
+        Select(label=_('Polls I Joined'), required=True, name='poll_id',
+               options=options),
+        Submit(name='poll/show-result', text=_('View Result')))
     return form.render()

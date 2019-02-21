@@ -2,37 +2,26 @@
 
 from flask_babel import gettext as _
 
-from component import Form, Text
-from component import Select, Option
-from component.action import PrimaryAction, DangerAction
+from component import Form, Section
+from component import Select, SelectOption
+from component import PrimarySubmit, DangerSubmit
+
+
+def build_option(num):
+    return SelectOption(_(text='with %(num)d options', num=num), value=num)
 
 
 def create_setup_option_form():
     form = Form()
-    form.add_fields(Text(value=_('Your are creating a poll, '
-                                 'how many options do you want?')),
-                    Select(name='option_count',
-                           label=_('Option Count'),
-                           options=[
-                               Option(text=_('with %(num)d options', num=2),
-                                      value=2),
-                               Option(text=_('with %(num)d options', num=3),
-                                      value=3),
-                               Option(text=_('with %(num)d options', num=4),
-                                      value=4),
-                               Option(text=_('with %(num)d options', num=5),
-                                      value=5),
-                               Option(text=_('with %(num)d options', num=6),
-                                      value=6),
-                               Option(text=_('with %(num)d options', num=7),
-                                      value=7),
-                               Option(text=_('with %(num)d options', num=8),
-                                      value=8),
-                               Option(text=_('with %(num)d options', num=9),
-                                      value=9),
-                               ]))
     form.add_actions(
-        PrimaryAction(name='poll/select-option-count', text=_('Confirm')),
-        DangerAction(name='poll/cancel-select-option-count', text=_('Cancel')),
+        Section(value=_('Your are creating a poll, '
+                        'how many options do you want?')),
+
+        Select(name='option_count', label=_('Option Count'),
+               options=[build_option(n) for n in range(2, 9 + 1)]),
+
+        PrimarySubmit(name='poll/select-option-count', text=_('Confirm')),
+
+        DangerSubmit(name='poll/cancel-select-option-count', text=_('Cancel')),
     )
     return form.render()

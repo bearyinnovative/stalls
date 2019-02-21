@@ -4,9 +4,6 @@ from datetime import datetime
 import logging
 
 from bearychat import openapi
-from component import Form, Text, Input
-from component import Select, Option, DateSelect, ChannelSelect
-from component.action import PrimaryAction, DangerAction
 from envcfg.raw import stalls as config
 from flask import url_for
 from flask_babel import gettext as _
@@ -42,30 +39,7 @@ def select_count_option(payload):
         option_count = int(data.get('option_count'))
     except ValueError:
         return message.make_error(_('Parameters Error'))
-
-    form = Form()
-    form.add_fields(Text(value=_('Your are creating a poll with '
-                                 '%(count)d options',
-                                 count=option_count)),
-                    Input(label=_('Description'), name='description'),
-                    Input(name='option_count',
-                          hidden=True, default_value=option_count))
-
-    for each in range(option_count):
-        label = _("Option %(idx)d", idx=(each+1))
-        name = "option_{}".format(each + 1)
-        form.add_field(Input(name=name, label=label))
-
-    form.add_fields(Select(name='is_anonymous', label=_('Public or Anonymous'),
-                           options=[Option(text=_('Public'), value=False),
-                                    Option(text=_('Anonymous'), value=True)]),
-                    DateSelect(name='end_datetime', label=_('Expiration')),
-                    ChannelSelect(name='channel', label=_('Target Channel')))
-
-    form.add_actions(PrimaryAction(name='poll/confirm-create', text=_('Confirm')),
-                     DangerAction(name='poll/cancel-create', text=_('Cancel')))
-
-    return form.render()
+    return form.create_poll_form(option_count)
 
 
 def cancel_select_option_count(payload):

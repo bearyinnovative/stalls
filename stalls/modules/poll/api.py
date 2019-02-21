@@ -13,7 +13,8 @@ from stalls.modules.poll.form import create_show_poll_form
 from stalls.modules.poll.form import (create_ready_show_poll_result_form,
                                       create_show_created_poll_result_form,
                                       create_show_joined_poll_result_form)
-from stalls.modules.poll.message import get_start, make_error
+from stalls.modules.poll.form.start import getting_start
+from stalls.modules.poll.message import make_error
 from stalls.modules.poll.model.poll import Poll, UserSelection
 from stalls.modules.poll.service import process_create, process_vote
 from stalls.modules.poll.utils import (create_result_chart,
@@ -38,8 +39,8 @@ def handle_message():
         data = {
             "vchannel_id": request.json['vchannel'],
             "text": ("欢迎使用会议小助手！我可以帮助你在 BearyChat "
-                     "中处理会议、投票！"
-                     "您可以直接新建投票、会议，或使用模板来适用更多场景！"),
+                     "中处理投票~~、会议~~！"
+                     "您可以直接新建投票~~、会议，或使用模板来适用更多场景~~！"),
             "form_url": url_for("poll.start_poll", _external=True),
         }
 
@@ -62,7 +63,7 @@ def preview_poll():
 
 @bp.route('/bearychat/poll')
 def start_poll():
-    return json_response(get_start())
+    return json_response(getting_start())
 
 
 @bp.route('/bearychat/poll', methods=['POST'])

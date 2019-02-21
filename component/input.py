@@ -2,21 +2,18 @@
 
 from __future__ import absolute_import
 
-from component.base import Field, FieldError    # noqa
+from component.base import Action
 
 
-class Input(Field):
+class Input(Action):
 
     type_ = 'input'
 
     def __init__(self, **kwargs):
-        self.name = kwargs.get('name')
-        self.label = kwargs.get('label')
-        self.required = kwargs.get('required')
+        self._required_props = ('name')
+        self._optional_props = ('label', 'value', 'hidden', 'placeholder')
 
-        self._props = {}
-        self._props['defaultValue'] = kwargs.get('default_value')
-        self._props['hidden'] = kwargs.get('hidden')
-        self._props['disabled'] = kwargs.get('disabled')
-        self._props['placeholder'] = kwargs.get('placeholder')
-        self._props['description'] = kwargs.get('description')
+        for f in self._required_props + self._optional_props:
+            v = getattr(self, f)
+            if v is not None:
+                setattr(self, f, v)

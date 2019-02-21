@@ -2,20 +2,20 @@
 
 from __future__ import absolute_import
 
-from component.base import Field, FieldError    # noqa
+from component.base import Action
 
 
-class Checkbox(Field):
+class Checkbox(Action):
 
     type_ = 'checkbox'
 
     def __init__(self, **kwargs):
         self.name = kwargs.get('name')
         self.label = kwargs.get('label')
-        self.required = kwargs.get('required')
+        self.elements = []
 
-        self._props = {}
-        self._props['checked'] = kwargs.get('checked')
-        self._props['name'] = kwargs.get('name')
-        self._props['text'] = kwargs.get('text')
-        self._props['disabled'] = kwargs.get('disabled')
+        self._required_props = ('name', 'elements')
+        self._optional_props = ('label')
+
+    def append(self, name, text):
+        self.elements.append({'name': name, 'text': text})
