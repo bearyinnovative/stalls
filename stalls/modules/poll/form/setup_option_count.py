@@ -4,7 +4,9 @@ from flask_babel import gettext as _
 
 from component import Form, Section
 from component import Select, SelectOption
-from component import PrimarySubmit, DangerSubmit
+from component import Submit
+
+from stalls.modules.poll.model import submit
 
 
 def build_option(num):
@@ -21,6 +23,6 @@ def create_setup_option_form():
                placeholder=_('Please select the number of options'),
                options=[build_option(n) for n in range(2, 9 + 1)]),
 
-        Submit(name='poll/select-option-count', text=_('Next')),
+        Submit(name=submit.SELECT_OPTION_COUNT, text=_('Next')),
     )
     return form.render()

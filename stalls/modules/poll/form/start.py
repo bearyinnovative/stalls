@@ -3,13 +3,16 @@
 from flask_babel import gettext as _
 
 from component import Form
-from component import Submit
+from component import Section, Submit
+
+from stalls.modules.poll.model import submit
 
 
 def getting_start(*args, **kwargs):
 
     form = Form()
     form.add_actions(
-        Submit(name='poll/setup-form', text=_('Create Poll')))
+        Section(value=_('Create poll by clicking following button')),
+        Submit(name=submit.SETUP_FORM, text=_('Create Poll')))
 
     return form.render()

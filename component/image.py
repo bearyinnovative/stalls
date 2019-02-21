@@ -7,7 +7,7 @@ from component.base import Action
 
 class Image(Action):
 
-    type_ = 'section'
+    type_ = 'image'
 
     def __init__(self, **kwargs):
         self.title = kwargs.get('title', '')

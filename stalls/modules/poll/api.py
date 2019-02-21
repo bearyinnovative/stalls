@@ -9,7 +9,7 @@ from flask import abort, request, url_for
 from flask_babel import gettext as _
 
 from stalls.blueprint import create_api_blueprint
-from stalls.modules.poll.form import create_show_poll_form
+from stalls.modules.poll.form import create_show_poll_form, show_poll_result
 from stalls.modules.poll.form import (create_ready_show_poll_result_form,
                                       create_show_created_poll_result_form,
                                       create_show_joined_poll_result_form)
@@ -147,35 +147,8 @@ def show_poll_result():
         poll_id = data.get('poll_id')
         poll = Poll.query.get(poll_id)
         if poll:
-            token = payload['token']
-            vchannel_id = get_p2p_vchannel_id(token, user_id)
-            image_url = url_for('poll.preview_poll',
-                                poll_id=poll.id,
-                                token=poll.visit_key,
-                                _external=True)
-            data = {
-                'token': token,
-                'vchannel_id': vchannel_id,
-                'text': _('["%(desc)s" Result](%(url)s)',
-                          desc=poll.description, url=image_url),
-                'attachments': [
-                    {
-                        'images': [
-                            {
-                                'url': image_url,
-                                'width': 800,
-                                'height': 600,
-                            }
-                        ],
-                    }
-                ]
-            }
-            resp = send_message_to_bearychat(token, data)
-            if 'error' in resp:
-                return json_response(create_error(_('Operation Failed')))
+            return show_poll_result(poll)
         else:
             return json_response(create_error(_('Operation Failed')))
-
-        return json_response(create_error(_('Success')))
 
     return json_response(create_error(_('Operation Failed')))

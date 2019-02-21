@@ -19,6 +19,9 @@ def create_show_poll_form(poll):
     form.add_actions(
         Section(label=_('Description'), value=poll.description),
 
+        Section(label=_('Poll Expiration'),
+                value=poll.end_datetime.strftime("%Y-%m-%d %H:%M:%S")),
+
         Select(name="poll_option", options=options),
 
         PrimarySubmit(name='poll/confirm-poll', text=_('Confirm')),

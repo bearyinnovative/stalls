@@ -86,6 +86,10 @@ class Poll(db.Model):
     def get_by_id_and_visit_key(cls, poll_id, vk):
         return cls.query.filter_by(id=poll_id, visit_key=vk).first()
 
+    @classmethod
+    def get_by_visit_key(cls, visit_key):
+        return cls.query.filter_by(visit_key=visit_key).first()
+
 
 class PollOption(db.Model):
 
