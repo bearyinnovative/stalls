@@ -25,6 +25,13 @@ def process_create(payload):
         return None
 
 
+def getting_start(payload):
+    visit_key = payload.get('visit_key', None)
+    if visit_key is None:
+        return form.make_msg(_('Failed'))
+    return form.make_start_form(visit_key)
+
+
 def setup_option_count(payload):
     return form.make_option_count_form()
 
@@ -181,10 +188,10 @@ def show_poll(payload):
     user_id = payload['user_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return form.make_msg(_('Invalid Poll'))
+        return form.make_msg(_('Poll Not Found'))
 
     if datetime.utcnow() > poll.end_datetime:
-        return form.make_msg(_('Poll Expired'))
+        return form.show_poll_result(poll)
 
     us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
     if us:
@@ -214,10 +221,13 @@ def confirm_poll(payload):
 
     poll = Poll.query.get(poll_id)
     if (poll is None or poll.team_id != team_id):
-        return form.make_msg(_('Invalid Poll'))
+        return form.make_msg(_('Poll Not Found'))
 
     if poll_option is None or poll_option.poll_id != poll.id:
-        return form.make_msg(_('Invalid Option'))
+        return form.make_msg(
+            _('Invalid Option'),
+            {'name': submit.CANCEL_CONFIRM_POLL,
+             'text': _('Go Back')})
 
     us = UserSelection.get_by_poll_id_and_user_id(poll_id, user_id)
     if us is not None:
@@ -238,6 +248,7 @@ def confirm_poll(payload):
 
 
 create_handlers = {
+    submit.GO_BACK_TO_START: getting_start,
     submit.SETUP_FORM: setup_option_count,
     submit.SELECT_OPTION_COUNT: select_count_option,
     submit.CANCEL_SELECT_OPTION_COUNT: setup_option_count,

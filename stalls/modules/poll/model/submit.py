@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+GO_BACK_TO_START = 'poll.getting_start'
+
 SETUP_FORM = 'poll.setup-form'
 
 SELECT_OPTION_COUNT = 'poll.select-option-count'

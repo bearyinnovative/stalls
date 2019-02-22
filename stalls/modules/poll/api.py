@@ -70,7 +70,8 @@ def start_poll():
     poll = Poll.get_by_visit_key(visit_key)
     if poll:
         if datetime.utcnow() > poll.end_datetime:
-            return json_response(form.make_msg(_('Poll Expired')))
+            return json_response(form.show_poll_result(poll))
+
         us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
         if us:
             response = form.show_poll_result(poll)
@@ -89,7 +90,10 @@ def handle_poll():
     response = process_create(payload)
     if response is None:
         logging.getLogger('poll').info('none respond')
-        return json_response(form.make_msg(_('Operation Failed')))
+        return json_response(form.make_msg(
+            _('Operation Failed'),
+            {'text': _('Go Back'), 'name': submit.SETUP_FORM}))
+
     return json_response(response)
 
 
@@ -100,10 +104,11 @@ def get_poll():
     user_id = args['user_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(form.make_msg(_('Invalid Poll')))
+        return json_response(form.make_msg(_('Poll Not Found')))
 
     if datetime.utcnow() > poll.end_datetime:
-        return json_response(form.make_msg(_('Poll Expired')))
+        response = form.show_poll_result(poll)
+        return json_response(response)
 
     us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
     if us:
@@ -120,10 +125,11 @@ def do_poll():
     id_ = args['poll_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(form.make_msg(_('Invalid Poll')))
+        return json_response(form.make_msg(_('Poll Not Found')))
 
     if datetime.utcnow() > poll.end_datetime:
-        return json_response(form.make_msg(_('Poll Expired')))
+        response = form.show_poll_result(poll)
+        return json_response(response)
 
     payload = deepcopy(request.json or {})
     payload.update(args.to_dict())
@@ -169,6 +175,6 @@ def show_poll_result():
         if poll:
             return form.show_poll_result(poll)
         else:
-            return json_response(form.make_msg(_('Operation Failed')))
+            return json_response(form.make_msg(_('Poll Not Found')))
 
     return json_response(form.make_msg(_('Operation Failed')))

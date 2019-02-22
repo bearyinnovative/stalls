@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-22 14:09+0800\n"
+"POT-Creation-Date: 2019-02-22 15:13+0800\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -22,54 +22,51 @@ msgstr ""
 msgid "Poll Result"
 msgstr ""
 
-#: stalls/modules/poll/api.py:73 stalls/modules/poll/api.py:106
-#: stalls/modules/poll/api.py:126 stalls/modules/poll/service.py:187
-msgid "Poll Expired"
-msgstr ""
-
-#: stalls/modules/poll/api.py:92 stalls/modules/poll/api.py:134
-#: stalls/modules/poll/api.py:172 stalls/modules/poll/api.py:174
+#: stalls/modules/poll/api.py:94 stalls/modules/poll/api.py:140
+#: stalls/modules/poll/api.py:180
 msgid "Operation Failed"
 msgstr ""
 
-#: stalls/modules/poll/api.py:103 stalls/modules/poll/api.py:123
-#: stalls/modules/poll/service.py:184 stalls/modules/poll/service.py:217
-msgid "Invalid Poll"
-msgstr ""
-
-#: stalls/modules/poll/service.py:38 stalls/modules/poll/service.py:47
-#: stalls/modules/poll/service.py:53 stalls/modules/poll/service.py:70
-#: stalls/modules/poll/service.py:77
-msgid "Parameters Error"
-msgstr ""
-
-#: stalls/modules/poll/service.py:40 stalls/modules/poll/service.py:49
-#: stalls/modules/poll/service.py:55 stalls/modules/poll/service.py:79
-#: stalls/modules/poll/service.py:209
+#: stalls/modules/poll/api.py:95 stalls/modules/poll/service.py:47
+#: stalls/modules/poll/service.py:56 stalls/modules/poll/service.py:62
+#: stalls/modules/poll/service.py:86 stalls/modules/poll/service.py:216
+#: stalls/modules/poll/service.py:230
 msgid "Go Back"
 msgstr ""
 
-#: stalls/modules/poll/service.py:92 stalls/modules/poll/service.py:96
-msgid "Invalid Expiration"
-msgstr ""
-
-#: stalls/modules/poll/service.py:136
+#: stalls/modules/poll/api.py:107 stalls/modules/poll/api.py:128
+#: stalls/modules/poll/api.py:178 stalls/modules/poll/service.py:143
+#: stalls/modules/poll/service.py:191 stalls/modules/poll/service.py:224
 msgid "Poll Not Found"
 msgstr ""
 
-#: stalls/modules/poll/service.py:207
+#: stalls/modules/poll/service.py:31
+msgid "Failed"
+msgstr ""
+
+#: stalls/modules/poll/service.py:45 stalls/modules/poll/service.py:54
+#: stalls/modules/poll/service.py:60 stalls/modules/poll/service.py:77
+#: stalls/modules/poll/service.py:84
+msgid "Parameters Error"
+msgstr ""
+
+#: stalls/modules/poll/service.py:99 stalls/modules/poll/service.py:103
+msgid "Invalid Expiration"
+msgstr ""
+
+#: stalls/modules/poll/service.py:214
 msgid "Please Choose Your Option"
 msgstr ""
 
-#: stalls/modules/poll/service.py:220
+#: stalls/modules/poll/service.py:228
 msgid "Invalid Option"
 msgstr ""
 
-#: stalls/modules/poll/service.py:225
+#: stalls/modules/poll/service.py:235
 msgid "You have voted"
 msgstr ""
 
-#: stalls/modules/poll/service.py:227
+#: stalls/modules/poll/service.py:237
 msgid "Show Result"
 msgstr ""
 
