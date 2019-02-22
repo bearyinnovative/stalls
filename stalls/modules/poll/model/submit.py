@@ -15,3 +15,7 @@ SHOW_RESULT = 'poll.show-result'
 SHOW_CREATED_RESULT = 'poll.show-created-result'
 
 SHOW_JOINED_RESULT = 'poll.show-joined-result'
+
+CANCEL_SELECT_OPTION_COUNT = 'poll.cancel-select-option-count'
+
+CANCEL_CONFIRM_POLL = 'poll.cancel-confirm-poll'

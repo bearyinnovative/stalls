@@ -12,7 +12,7 @@ from stalls.blueprint import create_api_blueprint
 from stalls.modules.poll import form
 
 from stalls.modules.poll.model import submit
-from stalls.modules.poll.model.poll import Poll, UserSelection
+from stalls.modules.poll.model.poll import Poll, UserSelection, gen_visit_key
 from stalls.modules.poll.service import process_create, process_vote
 from stalls.modules.poll.utils import (create_result_chart,
                                        send_message_to_bearychat)
@@ -32,15 +32,21 @@ def handle_message():
             "form_url": url_for("poll.get_poll_result", _external=True),
         }
     else:
+        visit_key = gen_visit_key()
         data = {
             "vchannel_id": request.json['vchannel'],
             "text": ("欢迎使用会议小助手！我可以帮助你在 BearyChat "
                      "中处理投票~~、会议~~！"
                      "您可以直接新建投票~~、会议，或使用模板来适用更多场景~~！"),
-            "form_url": url_for("poll.start_poll", _external=True),
+            "form_url": url_for("poll.start_poll",
+                                visit_key=visit_key,
+                                _external=True),
         }
 
-    resp = send_message_to_bearychat(token, data)
+    try:
+        resp = send_message_to_bearychat(token, data)
+    except Exception:
+        return 'failed'
     if 'error' in resp:
         return 'failed'
     return 'ok'
@@ -59,7 +65,20 @@ def preview_poll():
 
 @bp.route('/bearychat/poll')
 def start_poll():
-    return json_response(form.make_start_form())
+    visit_key = request.args.get('visit_key')
+    user_id = request.args.get('user_id')
+    poll = Poll.get_by_visit_key(visit_key)
+    if poll:
+        if datetime.utcnow() > poll.end_datetime:
+            return json_response(form.make_msg(_('Poll Expired')))
+        us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
+        if us:
+            response = form.show_poll_result(poll)
+        else:
+            response = form.show_poll(poll)
+        return json_response(response)
+
+    return json_response(form.make_start_form(visit_key))
 
 
 @bp.route('/bearychat/poll', methods=['POST'])

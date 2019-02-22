@@ -11,7 +11,8 @@ from flask_babel import gettext as _
 from stalls.extensions import db
 from stalls.modules.poll import form
 from stalls.modules.poll.model import submit
-from stalls.modules.poll.model.poll import Poll, PollOption, UserSelection
+from stalls.modules.poll.model.poll import (Poll, PollOption, UserSelection,
+                                            gen_visit_key)
 
 
 def process_create(payload):
@@ -33,23 +34,41 @@ def select_count_option(payload):
     option_count_arr = data.get('option_count', [])
 
     if (not isinstance(option_count_arr, list)) or len(option_count_arr) != 1:
-        return form.make_msg(_('Parameters Error'))
+        return form.make_msg(
+            _('Parameters Error'),
+            {'name': submit.CANCEL_SELECT_OPTION_COUNT,
+             'text': _('Go Back')})
 
     option_count = option_count_arr[0]
     try:
         option_count = int(option_count)
     except ValueError:
-        return form.make_msg(_('Parameters Error'))
+        return form.make_msg(
+            _('Parameters Error'),
+            {'name': submit.CANCEL_SELECT_OPTION_COUNT,
+             'text': _('Go Back')})
+
+    if not 2 <= option_count <= 9:
+        return form.make_msg(
+            _('Parameters Error'),
+            {'name': submit.CANCEL_SELECT_OPTION_COUNT,
+             'text': _('Go Back')})
 
     return form.make_poll_form(option_count)
 
 
 def create_poll(payload):
     hubot_token = payload['token']
+    visit_key = payload['visit_key']
     team_id = payload['team_id']
     user_id = payload['user_id']
     message_key = payload['message_key']
     data = payload['data']
+
+    found_poll = Poll.get_by_visit_key(visit_key)
+    if found_poll is not None:
+        return form.make_msg(_("Parameters Error"))
+
     option_count = 0
     try:
         option_count = int(data.get('option_count'))
@@ -75,6 +94,7 @@ def create_poll(payload):
 
     poll = Poll(
         hubot_token=hubot_token,
+        visit_key=visit_key or gen_visit_key(),
         team_id=team_id,
         user_id=user_id,
         description=data.get('description'),
@@ -111,14 +131,6 @@ def refresh_poll(payload):
     if poll:
         return form.show_poll_result(poll)
     return form.make_msg(_('Poll Not Found'))
-
-
-create_handlers = {
-    submit.SETUP_FORM: setup_option_count,
-    submit.SELECT_OPTION_COUNT: select_count_option,
-    submit.CONFIRM_CREATE: create_poll,
-    submit.REFRESH: refresh_poll,
-}
 
 
 def notify_channels(payload, poll):
@@ -161,6 +173,25 @@ def process_vote(payload):
         return None
 
 
+def show_poll(payload):
+    id_ = payload['poll_id']
+    user_id = payload['user_id']
+    poll = Poll.query.get(id_)
+    if poll is None:
+        return form.make_msg(_('Invalid Poll'))
+
+    if datetime.utcnow() > poll.end_datetime:
+        return form.make_msg(_('Poll Expired'))
+
+    us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
+    if us:
+        response = form.show_poll_result(poll)
+    else:
+        response = form.show_poll(poll)
+
+    return response
+
+
 def confirm_poll(payload):
     poll_id = payload['poll_id']
     team_id = payload['team_id']
@@ -169,7 +200,10 @@ def confirm_poll(payload):
     poll_option_ids = data.get('poll_option', [])
 
     if (not isinstance(poll_option_ids, list)) or len(poll_option_ids) != 1:
-        return form.make_msg(_('Please Choose Your Option'))
+        return form.make_msg(
+            _('Please Choose Your Option'),
+            {'name': submit.CANCEL_CONFIRM_POLL,
+             'text': _('Go Back')})
 
     poll_option_id = poll_option_ids[0]
 
@@ -184,7 +218,10 @@ def confirm_poll(payload):
 
     us = UserSelection.get_by_poll_id_and_user_id(poll_id, user_id)
     if us is not None:
-        return form.make_msg(_('You have voted'))
+        return form.make_msg(
+            _('You have voted'),
+            {'name': submit.SHOW_RESULT,
+             'text': _('Show Result')})
 
     us = UserSelection(
         poll_id=poll.id,
@@ -194,9 +231,20 @@ def confirm_poll(payload):
     )
     us.save()
 
-    return form.make_msg(_('Opeartion Success'))
+    return form.show_poll_result(poll)
+
+
+create_handlers = {
+    submit.SETUP_FORM: setup_option_count,
+    submit.SELECT_OPTION_COUNT: select_count_option,
+    submit.CANCEL_SELECT_OPTION_COUNT: setup_option_count,
+    submit.CONFIRM_CREATE: create_poll,
+    submit.REFRESH: refresh_poll,
+}
 
 
 vote_handlers = {
     submit.CONFIRM_POLL: confirm_poll,
+    submit.CANCEL_CONFIRM_POLL: show_poll,
+    submit.SHOW_RESULT: show_poll,
 }
