@@ -137,7 +137,7 @@ def do_poll():
     response = process_vote(payload)
     if response is None:
         logging.getLogger('poll').info('none respond')
-        return json_response(form.make_msg(_('Operation Failed')))
+        return json_response(form.make_msg(_('Action Not Found')))
     return json_response(response)
 
 
@@ -177,4 +177,4 @@ def show_poll_result():
         else:
             return json_response(form.make_msg(_('Poll Not Found')))
 
-    return json_response(form.make_msg(_('Operation Failed')))
+    return json_response(form.make_msg(_('Action Not Foudn')))

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import time
+
 from flask import url_for
 from flask_babel import gettext as _
 
@@ -88,7 +90,7 @@ def show_poll_result(poll):
     form.add_actions(
         context,
 
-        Input(value=poll.visit_key, name='token'),
+        Input(value=poll.visit_key, name='token', hidden=True),
 
         Section(value=_('Poll Name: %(description)s',
                         description=poll.description)),
@@ -112,10 +114,11 @@ def show_poll_result(poll):
     image_url = url_for('poll.preview_poll',
                         poll_id=poll.id,
                         token=poll.visit_key,
+                        ts=time.time(),
                         _external=True)
 
     form.add_actions(
         Image(title=_('Poll Result'), url=image_url),
-        Submit(name=submit.REFRESH, label=_('Refresh')))
+        Submit(name=submit.REFRESH, text=_('Refresh')))
 
     return form.render()
