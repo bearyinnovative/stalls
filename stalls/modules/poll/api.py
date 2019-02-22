@@ -84,7 +84,7 @@ def start_poll():
 @bp.route('/bearychat/poll', methods=['POST'])
 def handle_poll():
     args = request.args
-    payload = deepcopy(request.json)
+    payload = deepcopy(request.json or {})
     payload.update(args.to_dict())
     response = process_create(payload)
     if response is None:
@@ -125,7 +125,7 @@ def do_poll():
     if datetime.utcnow() > poll.end_datetime:
         return json_response(form.make_msg(_('Poll Expired')))
 
-    payload = deepcopy(request.json)
+    payload = deepcopy(request.json or {})
     payload.update(args.to_dict())
 
     response = process_vote(payload)
