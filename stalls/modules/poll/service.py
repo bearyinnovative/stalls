@@ -261,4 +261,5 @@ vote_handlers = {
     submit.CONFIRM_POLL: confirm_poll,
     submit.CANCEL_CONFIRM_POLL: show_poll,
     submit.SHOW_RESULT: show_poll,
+    submit.REFRESH: refresh_poll,
 }
