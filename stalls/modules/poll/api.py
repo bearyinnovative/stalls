@@ -177,4 +177,4 @@ def show_poll_result():
         else:
             return json_response(form.make_msg(_('Poll Not Found')))
 
-    return json_response(form.make_msg(_('Action Not Foudn')))
+    return json_response(form.make_msg(_('Action Not Found')))

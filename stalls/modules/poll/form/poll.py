@@ -45,9 +45,11 @@ def make_poll_form(option_count):
         form.add_action(Input(name=name, label=label))
 
     form.add_actions(
-        DateSelect(name='end_timestamp', label=_('Poll Expiration')),
+        DateSelect(name='end_timestamp', label=_('Poll Expiration'),
+                   placeholder=_('Select Expiration')),
 
-        ChannelSelect(name='channels', label=_('Target Channel'), multi=True),
+        ChannelSelect(name='channels', label=_('Target Channel'),
+                      placeholder=_('Select Target Channels'), multi=True),
 
         PrimarySubmit(name=submit.CONFIRM_CREATE,
                       text=_('Create and Send Poll')),

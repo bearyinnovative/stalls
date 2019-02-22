@@ -28,7 +28,8 @@ def show_poll(poll):
                         expiration=poll.end_datetime.strftime(
                             "%Y-%m-%d %H:%M:%S"))),
 
-        Select(name="poll_option", options=options),
+        Select(name="poll_option", options=options,
+               placeholder=_('Please Choose your option')),
 
         PrimarySubmit(name=submit.CONFIRM_POLL, text=_('Confirm')),
     )
@@ -63,6 +64,7 @@ def show_created_polls(user_id):
     form = Form()
     form.add_actions(
         Select(label=_('Polls I Created'), required=True, name='poll_id',
+               placeholder=_('Choose poll'),
                options=options),
 
         Submit(name=submit.SHOW_RESULT, text=_('View Result')))
@@ -77,6 +79,7 @@ def show_joined_polls(user_id):
     form = Form()
     form.add_actions(
         Select(label=_('Polls I Joined'), required=True, name='poll_id',
+               placeholder=_('Choose poll'),
                options=options),
         Submit(name=submit.SHOW_RESULT, text=_('View Result')))
     return form.render()

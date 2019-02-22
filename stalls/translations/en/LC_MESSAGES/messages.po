@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-02-22 15:13+0800\n"
+"POT-Creation-Date: 2019-02-22 17:48+0800\n"
 "PO-Revision-Date: 2019-02-20 19:34+0800\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,13 +18,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.6.0\n"
 
-#: stalls/modules/poll/api.py:30 stalls/modules/poll/form/result.py:108
-#: stalls/modules/poll/form/result.py:118
+#: stalls/modules/poll/api.py:30 stalls/modules/poll/form/result.py:113
+#: stalls/modules/poll/form/result.py:124
 msgid "Poll Result"
 msgstr ""
 
-#: stalls/modules/poll/api.py:94 stalls/modules/poll/api.py:140
-#: stalls/modules/poll/api.py:180
+#: stalls/modules/poll/api.py:94
 msgid "Operation Failed"
 msgstr ""
 
@@ -39,6 +38,14 @@ msgstr ""
 #: stalls/modules/poll/api.py:178 stalls/modules/poll/service.py:143
 #: stalls/modules/poll/service.py:191 stalls/modules/poll/service.py:224
 msgid "Poll Not Found"
+msgstr ""
+
+#: stalls/modules/poll/api.py:140
+msgid "Action Not Found"
+msgstr ""
+
+#: stalls/modules/poll/api.py:180
+msgid "Action Not Foudn"
 msgstr ""
 
 #: stalls/modules/poll/service.py:31
@@ -110,49 +117,65 @@ msgstr ""
 msgid "Poll Expiration"
 msgstr ""
 
-#: stalls/modules/poll/form/poll.py:50
+#: stalls/modules/poll/form/poll.py:49
+msgid "Select Expiration"
+msgstr ""
+
+#: stalls/modules/poll/form/poll.py:51
 msgid "Target Channel"
 msgstr ""
 
-#: stalls/modules/poll/form/poll.py:53
+#: stalls/modules/poll/form/poll.py:52
+msgid "Select Target Channels"
+msgstr ""
+
+#: stalls/modules/poll/form/poll.py:55
 msgid "Create and Send Poll"
 msgstr ""
 
-#: stalls/modules/poll/form/result.py:22 stalls/modules/poll/form/result.py:93
+#: stalls/modules/poll/form/result.py:24 stalls/modules/poll/form/result.py:98
 #, python-format
 msgid "Poll Name: %(description)s"
 msgstr ""
 
-#: stalls/modules/poll/form/result.py:26 stalls/modules/poll/form/result.py:97
+#: stalls/modules/poll/form/result.py:28 stalls/modules/poll/form/result.py:102
 #, python-format
 msgid "Poll Expiration: %(expiration)s"
 msgstr ""
 
-#: stalls/modules/poll/form/result.py:31
+#: stalls/modules/poll/form/result.py:32
+msgid "Please Choose your option"
+msgstr ""
+
+#: stalls/modules/poll/form/result.py:34
 msgid "Confirm"
 msgstr ""
 
-#: stalls/modules/poll/form/result.py:44
+#: stalls/modules/poll/form/result.py:47
 msgid "You have not joined any polls yet"
 msgstr ""
 
-#: stalls/modules/poll/form/result.py:48 stalls/modules/poll/form/result.py:63
+#: stalls/modules/poll/form/result.py:51 stalls/modules/poll/form/result.py:66
 msgid "Polls I Created"
 msgstr ""
 
-#: stalls/modules/poll/form/result.py:52 stalls/modules/poll/form/result.py:77
+#: stalls/modules/poll/form/result.py:55 stalls/modules/poll/form/result.py:81
 msgid "Polls I Joined"
 msgstr ""
 
-#: stalls/modules/poll/form/result.py:66 stalls/modules/poll/form/result.py:79
+#: stalls/modules/poll/form/result.py:67 stalls/modules/poll/form/result.py:82
+msgid "Choose poll"
+msgstr ""
+
+#: stalls/modules/poll/form/result.py:70 stalls/modules/poll/form/result.py:84
 msgid "View Result"
 msgstr ""
 
-#: stalls/modules/poll/form/result.py:86
+#: stalls/modules/poll/form/result.py:91
 msgid "Poll Created"
 msgstr ""
 
-#: stalls/modules/poll/form/result.py:119
+#: stalls/modules/poll/form/result.py:125
 msgid "Refresh"
 msgstr ""
 
