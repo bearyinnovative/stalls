@@ -67,13 +67,16 @@ def create_poll(payload):
 
     found_poll = Poll.get_by_visit_key(visit_key)
     if found_poll is not None:
-        return form.make_msg(_("Parameters Error"))
+        return form.make_msg(_("Parameters Error",))
 
     option_count = 0
     try:
-        option_count = int(data.get('option_count'))
-    except ValueError:
-        return form.make_msg(_("Parameters Error"))
+        option_count = int(data.get('option_count', 0))
+    except (TypeError, ValueError):
+        return form.make_msg(
+            _("Parameters Error"),
+            {'name': submit.CANCEL_SELECT_OPTION_COUNT,
+             'text': _('Go Back')})
 
     options = []
     for idx in range(option_count):
