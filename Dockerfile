@@ -23,8 +23,8 @@ COPY ./entrypoint.sh /entrypoint.sh
 COPY ./requirements.txt /tmp/requirements.txt
 COPY ./component $WORKSPACE/component
 COPY ./stalls $WORKSPACE/stalls
+COPY ./scripts $WORKSPACE/scripts
 COPY ./deploy $WORKSPACE/deploy
-
 
 RUN pip install -r /tmp/requirements.txt -i https://pypi.douban.com/simple \
     && pip install gunicorn \
