@@ -16,5 +16,8 @@ class Input(Action):
         self.hidden = kwargs.get('hidden', False)
         self.placeholder = kwargs.get('placeholder')
 
+        if self.name is not None:
+            self.name = str(self.name)
+
         self._required_props = ('name', )
         self._optional_props = ('label', 'value', 'hidden', 'placeholder')

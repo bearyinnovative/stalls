@@ -1,0 +1,17 @@
+---
+version: '2'
+services:
+  mysql:
+    container_name: stalls
+    image: hub.didiyun.com/bearyinnovative/stalls:1550821612
+    tty: yes
+    environment:
+      - 'STALLS_DEBUG=0'
+      - 'STALLS_TESTING=0'
+      - 'STALLS_HOST=0.0.0.0'
+      - 'STALLS_PORT=5000'
+      - 'STALLS_GUNICORN_WORKERS=4'
+      - 'STALLS_OPENAPI_BASE=http://172.16.0.11:3326/v1'
+      - 'STALLS_SQLALCHEMY_DATABASE_URI=sqlite:////workspace/data/poll.sqlite'
+    ports:
+      - "5055:5000"
