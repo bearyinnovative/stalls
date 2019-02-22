@@ -30,6 +30,7 @@ def main():
     app = create_app()
     with app.test_request_context():
         expired_polls = Poll.get_multi_expired(EXPIRED_DURATION)
+        print 'Schedule: {}'.format(expired_polls)
         for poll in expired_polls:
             notify_creator(poll)
 
