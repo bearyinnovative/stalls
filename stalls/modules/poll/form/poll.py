@@ -12,7 +12,8 @@ from stalls.modules.poll.model import submit
 
 def make_option_count_form():
     def build_option(num):
-        return SelectOption(text=_('with %(num)d options', num=num), value=num)
+        return SelectOption(text=_('with %(num)d options', num=num),
+                            value=str(num))
 
     form = Form()
     form.add_actions(

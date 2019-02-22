@@ -14,7 +14,7 @@ from stalls.modules.poll.model.poll import Poll, UserSelection, PollOption
 def show_poll(poll):
     poll_options = PollOption.get_multi_by_poll_id(poll.id)
 
-    options = [SelectOption(text=each.label, value=each.id)
+    options = [SelectOption(text=each.label, value=str(each.id))
                for each in poll_options]
 
     form = Form()
