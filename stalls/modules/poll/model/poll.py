@@ -3,7 +3,7 @@
 from __future__ import absolute_import
 
 import binascii
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import os
 
@@ -89,6 +89,14 @@ class Poll(db.Model):
     @classmethod
     def get_by_visit_key(cls, visit_key):
         return cls.query.filter_by(visit_key=visit_key).first()
+
+    @classmethod
+    def get_multi_expired(cls, duration_s=60):
+        utcnow = datetime.utcnow()
+        upper = utcnow
+        lower = utcnow - timedelta(seconds=duration_s)
+        return cls.query.filter(cls.end_datetime.between(
+            lower, upper)).all()
 
 
 class PollOption(db.Model):

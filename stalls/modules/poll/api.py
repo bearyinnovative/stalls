@@ -14,9 +14,9 @@ from stalls.modules.poll import form
 from stalls.modules.poll.model import submit
 from stalls.modules.poll.model.poll import Poll, UserSelection, gen_visit_key
 from stalls.modules.poll.service import process_create, process_vote
-from stalls.modules.poll.utils import (create_result_chart,
-                                       send_message_to_bearychat)
+from stalls.modules.poll.utils import create_result_chart
 from stalls.utils.api import json_response
+from stalls.utils.bearychat import send_message_to_bearychat
 
 
 bp = create_api_blueprint('poll', __name__)
@@ -138,6 +138,12 @@ def do_poll():
 @bp.route('/bearychat/poll.result')
 def get_poll_result():
     args = request.args
+    poll_id = args.get('poll_id')
+    if poll_id is not None:
+        poll = Poll.query.get(poll_id)
+        if poll is not None:
+            return json_response(form.show_poll_result(poll))
+
     user_id = args['user_id']
     return json_response(form.make_ready_form(user_id))
 
