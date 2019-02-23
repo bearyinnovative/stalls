@@ -54,9 +54,8 @@ def handle_message():
 @bp.route('/poll.preview')
 def preview_poll():
     poll_id = request.args.get('poll_id')
-    # visit_key = request.args.get('token')
-    # poll = Poll.get_by_id_and_visit_key(poll_id, visit_key)
-    poll = Poll.query.get(poll_id)
+    visit_key = request.args.get('token')
+    poll = Poll.get_by_id_and_visit_key(poll_id, visit_key)
     if poll is None:
         return abort(404)
     chart = create_result_chart(poll)
