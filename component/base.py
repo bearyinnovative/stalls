@@ -26,7 +26,7 @@ class Form(object):
     def render(self):
         return {
             'version': self.version,
-            'actions': map(lambda x: x.render(), self.actions),
+            'actions': [x.render() for x in self.actions],
         }
 
 

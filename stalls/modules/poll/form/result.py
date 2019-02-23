@@ -72,7 +72,7 @@ def show_created_polls(user_id):
 
 
 def show_joined_polls(user_id):
-    poll_ids = map(lambda x: x.id, UserSelection.get_multi_by_user_id(user_id))
+    poll_ids = [x.id for x in UserSelection.get_multi_by_user_id(user_id)]
     polls = Poll.get_multi_by_ids(poll_ids)
     options = [SelectOption(text=each.description, value=each.id)
                for each in polls]
@@ -107,7 +107,7 @@ def show_poll_result(poll):
 
     for idx, each in enumerate(poll_options):
         form.add_action(
-            Section(value=u'{}. {}'.format(idx+1, each.label)))
+            Section(value='{}. {}'.format(idx+1, each.label)))
 
     result_text = Context()
     result_text.append(_('Poll Result'))

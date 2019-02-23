@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
-
 import binascii
 from datetime import datetime, timedelta
 import json
