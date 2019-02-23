@@ -115,8 +115,8 @@ def create_poll(payload):
     )
 
     poll.options = options
-    poll.members = filter(None, data.get('members', []))
-    poll.channels = filter(None, data.get('channels', []))
+    poll.members = [_f for _f in data.get('members', []) if _f]
+    poll.channels = [_f for _f in data.get('channels', []) if _f]
     poll.save()
 
     notify_members(payload, poll)

@@ -23,7 +23,7 @@ def _import_models():
         guess_module_name = 'stalls.modules.%s.models' % each
         try:
             __import__(guess_module_name, globals(), locals())
-            print 'Find model:', guess_module_name
+            print('Find model:', guess_module_name)
         except ImportError:
             pass
 
@@ -40,14 +40,14 @@ def syncdb():
         _import_models()
         db.create_all()
         db.session.commit()
-    print 'Database Created'
+    print('Database Created')
 
 
 @manager.command
 def dropdb():
     with application.test_request_context():
         db.drop_all()
-    print 'Database Dropped'
+    print('Database Dropped')
 
 
 if __name__ == '__main__':

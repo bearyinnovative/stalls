@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
-
 from component.base import Action
 
 
@@ -14,7 +12,8 @@ class Select(Action):
         self.label = kwargs.get('label')
         self.placeholder = kwargs.get('placeholder', '')
         self.multi = kwargs.get('multi', False)
-        self.options = map(lambda x: x.render(), kwargs.get('options', []))
+        options = kwargs.get('options')
+        self.options = [x.render for x in options]
 
         self._required_props = ('name', )
         self._optional_props = ('label', 'placeholder', 'multi', 'options')

@@ -22,7 +22,7 @@ def notify_creator(poll):
         "form_url": url_for("poll.get_poll_result", poll_id=poll.id,
                             _external=True),
     }
-    print 'Send to {}'.format(user_id)
+    print('Send to {}'.format(user_id))
     send_message_to_bearychat(token, data)
 
 
@@ -30,7 +30,7 @@ def main():
     app = create_app()
     with app.test_request_context():
         expired_polls = Poll.get_multi_expired(EXPIRED_DURATION)
-        print 'Schedule: {}'.format(expired_polls)
+        print('Schedule: {}'.format(expired_polls))
         for poll in expired_polls:
             notify_creator(poll)
 

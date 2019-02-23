@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from __future__ import absolute_import
 from copy import deepcopy
 from datetime import datetime
 import logging
@@ -25,7 +24,7 @@ bp = create_api_blueprint('poll', __name__)
 @bp.route('/bearychat/poll/bearychat', methods=['GET', 'POST'])
 def handle_message():
     token = request.json['token']
-    if request.json['text'] in (u'投票结果', 'result'):
+    if request.json['text'] in ('投票结果', 'result'):
         data = {
             'text': _('Poll Result'),
             "vchannel_id": request.json['vchannel'],
@@ -55,8 +54,9 @@ def handle_message():
 @bp.route('/poll.preview')
 def preview_poll():
     poll_id = request.args.get('poll_id')
-    visit_key = request.args.get('token')
-    poll = Poll.get_by_id_and_visit_key(poll_id, visit_key)
+    # visit_key = request.args.get('token')
+    # poll = Poll.get_by_id_and_visit_key(poll_id, visit_key)
+    poll = Poll.query.get(poll_id)
     if poll is None:
         return abort(404)
     chart = create_result_chart(poll)
