@@ -4,7 +4,7 @@ from copy import deepcopy
 from datetime import datetime
 import logging
 
-from flask import abort, request, url_for
+from flask import abort, request, url_for, make_response
 from flask_babel import gettext as _
 
 from stalls.blueprint import create_api_blueprint
@@ -53,13 +53,21 @@ def handle_message():
 
 @bp.route('/poll.preview')
 def preview_poll():
+    file_type = request.args.get('file_type')
     poll_id = request.args.get('poll_id')
     visit_key = request.args.get('token')
     poll = Poll.get_by_id_and_visit_key(poll_id, visit_key)
     if poll is None:
         return abort(404)
     chart = create_result_chart(poll)
-    return chart.render_response()
+    if file_type == 'svg':
+        return chart.render_response()
+    png = chart.render_to_png()
+    response = make_response(png)
+    response.headers.set('Content-Type', 'image/jpeg')
+    response.headers.set('Content-Disposition', 'attachment',
+                         filename='poll_{}.png'.format(poll_id))
+    return response
 
 
 @bp.route('/bearychat/poll')
