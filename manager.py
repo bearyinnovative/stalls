@@ -12,7 +12,7 @@ from stalls.extensions import db
 app_root = os.path.dirname(os.path.realpath(__name__))
 
 application = create_app('Applet-Poll')
-server = Server(port=5000)
+server = Server(host='0.0.0.0', port=5000)
 manager = Manager(application)
 manager.add_command("runserver", server)
 

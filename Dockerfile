@@ -28,8 +28,13 @@ COPY ./stalls $WORKSPACE/stalls
 COPY ./scripts $WORKSPACE/scripts
 COPY ./deploy $WORKSPACE/deploy
 
-RUN pip install -r /tmp/requirements.txt -i https://pypi.douban.com/simple \
+RUN apk add --no-cache gcc musl-dev linux-headers \
+                       build-base cairo-dev cairo cairo-tools \
+                       jpeg-dev zlib-dev freetype-dev \
+                       lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev \
+    && pip install -r /tmp/requirements.txt -i https://pypi.douban.com/simple \
     && pip install gunicorn \
+    && apk del gcc musl-dev linux-headers build-base \
     && chmod +x /entrypoint.sh
 
 RUN echo "*	*	*	*	*	python $WORKSPACE/scripts/cron/notify_expired.py 2>&1 >> $WORKSPACE/cronjob.log" > /etc/crontabs/root
