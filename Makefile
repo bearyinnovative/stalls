@@ -13,6 +13,5 @@ build-release-image:
 		--build-arg build_date=$(build_date) \
 		--build-arg version=$(version) \
 		--build-arg commit=$(commit) \
-		-v $(pip-cache-dir):/root/.cache/pip \
 		-t $(release-image) \
 		-f Dockerfile
