@@ -4,7 +4,7 @@ from copy import deepcopy
 from datetime import datetime
 import logging
 
-from flask import abort, request, url_for, make_response
+from flask import abort, request, url_for, make_response, jsonify
 from flask_babel import gettext as _
 
 from stalls.blueprint import create_api_blueprint
@@ -14,7 +14,6 @@ from stalls.modules.poll.model import submit
 from stalls.modules.poll.model.poll import Poll, UserSelection, gen_visit_key
 from stalls.modules.poll.service import process_create, process_vote
 from stalls.modules.poll.utils import create_result_chart
-from stalls.utils.api import json_response
 from stalls.utils.bearychat import send_message_to_bearychat
 
 
@@ -77,16 +76,16 @@ def start_poll():
     poll = Poll.get_by_visit_key(visit_key)
     if poll:
         if datetime.utcnow() > poll.end_datetime:
-            return json_response(form.show_poll_result(poll))
+            return jsonify(form.show_poll_result(poll))
 
         us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
         if us:
             response = form.show_poll_result(poll)
         else:
             response = form.show_poll(poll)
-        return json_response(response)
+        return jsonify(response)
 
-    return json_response(form.make_start_form(visit_key))
+    return jsonify(form.make_start_form(visit_key))
 
 
 @bp.route('/bearychat/poll', methods=['POST'])
@@ -97,11 +96,11 @@ def handle_poll():
     response = process_create(payload)
     if response is None:
         logging.getLogger('poll').info('none respond')
-        return json_response(form.make_msg(
+        return jsonify(form.make_msg(
             _('Operation Failed'),
             {'text': _('Go Back'), 'name': submit.SETUP_FORM}))
 
-    return json_response(response)
+    return jsonify(response)
 
 
 @bp.route('/bearychat/poll.vote')
@@ -111,11 +110,11 @@ def get_poll():
     user_id = args['user_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(form.make_msg(_('Poll Not Found')))
+        return jsonify(form.make_msg(_('Poll Not Found')))
 
     if datetime.utcnow() > poll.end_datetime:
         response = form.show_poll_result(poll)
-        return json_response(response)
+        return jsonify(response)
 
     us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
     if us:
@@ -123,7 +122,7 @@ def get_poll():
     else:
         response = form.show_poll(poll)
 
-    return json_response(response)
+    return jsonify(response)
 
 
 @bp.route('/bearychat/poll.vote', methods=['POST'])
@@ -132,11 +131,11 @@ def do_poll():
     id_ = args['poll_id']
     poll = Poll.query.get(id_)
     if poll is None:
-        return json_response(form.make_msg(_('Poll Not Found')))
+        return jsonify(form.make_msg(_('Poll Not Found')))
 
     if datetime.utcnow() > poll.end_datetime:
         response = form.show_poll_result(poll)
-        return json_response(response)
+        return jsonify(response)
 
     payload = deepcopy(request.json or {})
     payload.update(args.to_dict())
@@ -144,8 +143,8 @@ def do_poll():
     response = process_vote(payload)
     if response is None:
         logging.getLogger('poll').info('none respond')
-        return json_response(form.make_msg(_('Action Not Found')))
-    return json_response(response)
+        return jsonify(form.make_msg(_('Action Not Found')))
+    return jsonify(response)
 
 
 @bp.route('/bearychat/poll.result')
@@ -155,10 +154,10 @@ def get_poll_result():
     if poll_id is not None:
         poll = Poll.query.get(poll_id)
         if poll is not None:
-            return json_response(form.show_poll_result(poll))
+            return jsonify(form.show_poll_result(poll))
 
     user_id = args['user_id']
-    return json_response(form.make_ready_form(user_id))
+    return jsonify(form.make_ready_form(user_id))
 
 
 @bp.route('/bearychat/poll.result', methods=['POST'])
@@ -169,11 +168,11 @@ def show_poll_result():
     user_id = args['user_id']
 
     if payload['action'] == submit.SHOW_CREATED_RESULT:
-        return json_response(
+        return jsonify(
             form.show_created_polls(user_id))
 
     if payload['action'] == submit.SHOW_CREATED_RESULT:
-        return json_response(form.show_joined_polls(user_id))
+        return jsonify(form.show_joined_polls(user_id))
 
     if payload['action'] == submit.SHOW_RESULT:
         data = payload['data']
@@ -182,6 +181,6 @@ def show_poll_result():
         if poll:
             return form.show_poll_result(poll)
         else:
-            return json_response(form.make_msg(_('Poll Not Found')))
+            return jsonify(form.make_msg(_('Poll Not Found')))
 
-    return json_response(form.make_msg(_('Action Not Found')))
+    return jsonify(form.make_msg(_('Action Not Found')))

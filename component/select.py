@@ -13,7 +13,7 @@ class Select(Action):
         self.placeholder = kwargs.get('placeholder', '')
         self.multi = kwargs.get('multi', False)
         options = kwargs.get('options')
-        self.options = [x.render for x in options]
+        self.options = [x.render() for x in options]
 
         self._required_props = ('name', )
         self._optional_props = ('label', 'placeholder', 'multi', 'options')

@@ -2,6 +2,8 @@
 
 import json
 
+from flask import make_response, jsonify
+
 
 def json_response(data):
-    return json.dumps(data), {"Content-Type": "application/json;charset=utf-8"}
+    return jsonify(data)
