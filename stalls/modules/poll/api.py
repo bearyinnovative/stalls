@@ -63,7 +63,7 @@ def preview_poll():
         return chart.render_response()
     png = chart.render_to_png()
     response = make_response(png)
-    response.headers.set('Content-Type', 'image/jpeg')
+    response.headers.set('Content-Type', 'image/png')
     response.headers.set('Content-Disposition', 'attachment',
                          filename='poll_{}.png'.format(poll_id))
     return response
