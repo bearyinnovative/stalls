@@ -1,4 +1,4 @@
-FROM python:2.7-alpine3.8
+FROM python:3.7-alpine3.8
 
 ARG build_date
 ARG commit
@@ -6,6 +6,8 @@ ARG version
 
 ENV WORKSPACE /workspace
 ENV PYTHONPATH="$WORKSPACE"
+ENV LC_ALL="en_US.UTF-8"
+ENV LANG="en_US.UTF-8"
 ENV STALLS_HOST="localhost"
 ENV STALLS_PORT="5000"
 ENV STALLS_GUNICORN_WORKERS="1"
