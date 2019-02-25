@@ -78,8 +78,7 @@ def start_poll():
         if datetime.utcnow() > poll.end_datetime:
             return jsonify(form.show_poll_result(poll))
 
-        us = UserSelection.get_by_poll_id_and_user_id(poll.id, user_id)
-        if us:
+        if poll.user_id == user_id:
             response = form.show_poll_result(poll)
         else:
             response = form.show_poll(poll)
@@ -99,7 +98,6 @@ def handle_poll():
         return jsonify(form.make_msg(
             _('Operation Failed'),
             {'text': _('Go Back'), 'name': submit.SETUP_FORM}))
-
     return jsonify(response)
 
 

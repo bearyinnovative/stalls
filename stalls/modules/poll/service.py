@@ -254,6 +254,7 @@ create_handlers = {
     submit.CANCEL_SELECT_OPTION_COUNT: setup_option_count,
     submit.CONFIRM_CREATE: create_poll,
     submit.REFRESH: refresh_poll,
+    submit.CONFIRM_POLL: confirm_poll,
 }
 
 
