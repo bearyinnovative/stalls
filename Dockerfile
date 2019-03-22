@@ -28,12 +28,14 @@ COPY ./stalls $WORKSPACE/stalls
 COPY ./scripts $WORKSPACE/scripts
 COPY ./deploy $WORKSPACE/deploy
 
-RUN apk add --no-cache gcc musl-dev linux-headers \
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.ustc.edu.cn/g' /etc/apk/repositories;\ 
+    apk add --no-cache gcc musl-dev linux-headers \
                        build-base cairo-dev cairo cairo-tools \
+                       python3-dev mariadb-dev build-base mariadb-connector-c \
                        jpeg-dev zlib-dev freetype-dev \
                        lcms2-dev openjpeg-dev tiff-dev tk-dev tcl-dev \
-    && pip install -r /tmp/requirements.txt -i https://pypi.douban.com/simple \
-    && pip install gunicorn \
+    && pip3 install -r /tmp/requirements.txt -i https://pypi.douban.com/simple \
+    && pip3 install gunicorn mysqlclient==1.4.2.post1 \
     && apk del gcc musl-dev linux-headers build-base \
     && chmod +x /entrypoint.sh
 
